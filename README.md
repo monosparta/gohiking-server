@@ -60,9 +60,19 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# hiking
-# hiking
-# hiking
-# hiking
-# hiking
+
 # hiking-backend
+
+## 專案安裝步驟
+
+```
+npm i
+composer i
+cp .env.example .env
+// (填入環境變數)
+sudo apt-get install php-sqlite3
+touch ./database/hiking.sqlite
+php artisan migrate:fresh --seed 
+// (測試能否運作)
+php artisan serve
+```
