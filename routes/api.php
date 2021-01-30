@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PassportAuthController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,9 +20,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/incorrectToken', function () {
-    return response(['Status' => 'incorrect token'], 401);
-})->name('incorrectToken');            
+Route::get('incorrectToken', function () {
+    return response(['Status' => 'incorrect token!'], 401);
+})->name('incorrectToken');     
+
+Route::post('register', [PassportAuthController::class, 'register']);
+Route::post('login', [PassportAuthController::class, 'login']);
 
 Route::middleware('auth:api')->get('/index', function () {
     return ['Status' => 'Logged!'];
