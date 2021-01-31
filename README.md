@@ -1,3 +1,128 @@
+# hiking-backend
+
+## 專案安裝步驟
+
+```
+npm i
+composer i
+cp .env.example .env
+// (在.env填入環境變數，內容另貼於Trello)
+php artisan migrate:fresh --seed 
+php artisan passport:install
+// (測試能否運作)
+php artisan serve
+```
+
+### 若使用SQLITE的額外步驟
+```
+sudo apt-get install php-sqlite3
+touch ./database/hiking.sqlite
+```
+
+## 身分驗證
+
+### 帳密註冊
+1. 發送POST /api/register，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "email": "(使用者輸入的email)",
+  "password": "(使用者輸入的對應密碼)"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+}
+```
+3. 前端若有設定自動攜帶上述token於headers，註冊後不必額外登入即可使用
+
+### 建立個人資料
+0. 前端需設定攜帶上述token於headers
+1. 發送POST /api/profile，Body(x-www-form-urlencoded)需攜帶：
+```
+{
+  "name": "姓名",
+  "gender": "性別",
+  "phone_number": "手機號碼",
+  "birth": "生日",
+  "live": "居住地"
+}
+```
+2. 回傳格式如下：
+```
+{
+  "Status":"Your profile is created!"
+}
+3. 錯誤的回應(代表要建立資料的帳號不存在)：
+```
+{
+    "errer": "This account is missing!"
+}
+
+### 帳密登入
+1. 發送POST /api/login，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "email": "(使用者輸入的email)",
+  "password": "(使用者輸入的對應密碼)"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+}
+```
+3. 前端需設定攜帶上述token於headers，才能成立登入狀態存取需驗證的API
+
+### 登入測試
+1. 以/api/index為例，驗證成功會收到：
+```
+{
+    "Status": "Logged!"
+}
+```
+2. token錯誤的回應：
+```
+{
+    "Status": "incorrect token"
+}
+```
+
+### 原生登入API(不建議使用)
+1. 發送POST /oauth/token，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "grant_type": "password",
+  "client_id": 2,
+  "client_secret": "(值另貼於Trello)",
+  "username": "(已註冊的email)",
+  "password": "(上述的對應密碼)"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token_type": "Bearer",
+    "expires_in": 31536000,
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9
+    ...(TLDR)",
+    "refresh_token": "def50200b8526c9dda9cf0012ff1f
+    ...(TLDR)"
+}
+```
+3. 之後存取需登入驗證的API時，發送請求需在Headers攜帶以下資訊：
+
+```
+{
+  "Authorization": "Bearer (上一步"access_token"的完整字串)"
+}
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -60,9 +185,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# hiking
-# hiking
-# hiking
-# hiking
-# hiking
-# hiking-backend
+

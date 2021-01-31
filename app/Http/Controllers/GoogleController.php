@@ -17,33 +17,40 @@ class GoogleController extends Controller
     public function handleGoogleCallback(){
         try{
             $user = Socialite::driver('google')->user();
-            $finduser = User::where('email', $user->email)->first();
+            $findUser = User::where('email', $user->email)->first();
             
-            if($finduser->google_id){
-                Auth::login($finduser);
+            if($findUser->google_id){
+                Auth::login($findUser);
 
-                return redirect('dashboard')->with('message', 'Logged in!');
+                $token = $findUser->user()->createToken('LaravelAuthApp')->accessToken;                
+                return response()->json(['token' => $token], 200);
+                // return redirect('dashboard')->with('message', 'Logged in!'); 
             }
-            if($finduser && $finduser->google_id == NULL ){
+            if($findUser && $findUser->google_id == NULL ){
                 $updateUser = User::where('email', $user->email)->update([
                     'google_id' => $user->id 
                 ]); 
                 if (!$updateUser){
-                    return redirect('welcome')->with('message', 'You can not loggin');
+                    return response()->json(['message' => 'You can not loggin'], 401);
+                    // return redirect('welcome')->with('message', 'You can not loggin');
                 }
-                return redirect('dashboard')->with('message', 'Logged in!');
+                $token = $findUser->user()->createToken('LaravelAuthApp')->accessToken;     
+                return response()->json(['token' => $token], 200);
+                // return redirect('dashboard')->with('message', 'Logged in!'); 
             }
             
-            if(!$finduser){
+            if(!$findUser){
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id' => $user->id,
-                    'password' => encrypt('fbHoward')
+                    'password' => encrypt('fbHoward') // 不安全的寫法？
                 ]);
                 $newUser->save();
                 Auth::login($newUser);
-                return redirect('dashboard')->with('message', 'Logged in!');
+                $token = $newUser->createToken('LaravelAuthApp')->accessToken; 
+                return response()->json(['token' => $token], 200);
+                // return redirect('dashboard')->with('message', 'Logged in!'); 
             }              
         }catch(Exception $e){
             dd($e->getMessage());

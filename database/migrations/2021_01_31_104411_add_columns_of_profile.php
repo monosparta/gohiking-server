@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddGoogleIdColumn extends Migration
+class AddColumnsOfProfile extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,11 @@ class AddGoogleIdColumn extends Migration
     public function up()
     {
         Schema::table('users', function($table){
-            $table->string('google_id')->nullable();
+            $table->string('name')->nullable()->change();
+            $table->string('gender')->nullable();
+            $table->string('phone_number')->unique()->nullable();
+            $table->datetime('birth')->nullable();
+            $table->string('live')->nullable();
         });
     }
 
@@ -26,7 +30,8 @@ class AddGoogleIdColumn extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('google_id');
+            $table->string('name')->change();
+            $table->dropColumn('gender', 'phone_number', 'birth', 'live');
         });
     }
 }
