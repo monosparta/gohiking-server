@@ -7,11 +7,16 @@ npm i
 composer i
 cp .env.example .env
 // (在.env填入環境變數，內容另貼於Trello)
-sudo apt-get install php-sqlite3
-touch ./database/hiking.sqlite
 php artisan migrate:fresh --seed 
+php artisan passport:install
 // (測試能否運作)
 php artisan serve
+```
+
+### 若使用SQLITE的額外步驟
+```
+sudo apt-get install php-sqlite3
+touch ./database/hiking.sqlite
 ```
 
 ## 身分驗證
@@ -21,7 +26,6 @@ php artisan serve
 
 ```
 {
-  "name": "(使用者輸入的帳號名稱)",
   "email": "(使用者輸入的email)",
   "password": "(使用者輸入的對應密碼)"
 }
@@ -33,6 +37,29 @@ php artisan serve
 }
 ```
 3. 前端若有設定自動攜帶上述token於headers，註冊後不必額外登入即可使用
+
+### 建立個人資料
+0. 前端需設定攜帶上述token於headers
+1. 發送POST /api/profile，Body(x-www-form-urlencoded)需攜帶：
+```
+{
+  "name": "姓名",
+  "gender": "性別",
+  "phone_number": "手機號碼",
+  "birth": "生日",
+  "live": "居住地"
+}
+```
+2. 回傳格式如下：
+```
+{
+  "Status":"Your profile is created!"
+}
+3. 錯誤的回應(代表要建立資料的帳號不存在)：
+```
+{
+    "errer": "This account is missing!"
+}
 
 ### 帳密登入
 1. 發送POST /api/login，Body(x-www-form-urlencoded)需攜帶：
