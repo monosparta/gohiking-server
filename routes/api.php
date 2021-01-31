@@ -25,8 +25,10 @@ Route::get('incorrectToken', function () {
 })->name('incorrectToken');     
 
 Route::post('register', [PassportAuthController::class, 'register']);
+Route::middleware('auth:api')->post('profile', [PassportAuthController::class, 'createProfile']);
+
 Route::post('login', [PassportAuthController::class, 'login']);
 
-Route::middleware('auth:api')->get('/index', function () {
+Route::middleware('auth:api')->get('index', function () {
     return ['Status' => 'Logged!'];
 });
