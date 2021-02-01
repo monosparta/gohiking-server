@@ -51,7 +51,7 @@ class PassportAuthController extends Controller
                 $updateUser = User::where('email', $findUser->email)->update([
                     'name' => $request->name,
                     'gender' => $request->gender,
-                    'phone_number' => $request->phoneNumber,
+                    'phone_number' => $request->phone_number,
                     'birth' => $request->birth,
                     'live' => $request->live,
                 ]); 
