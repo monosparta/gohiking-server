@@ -56,6 +56,7 @@ touch ./database/hiking.sqlite
 {
   "Status":"Your profile is created!"
 }
+```
 3. 錯誤的回應(代表要建立資料的帳號不存在)：
 ```
 {
