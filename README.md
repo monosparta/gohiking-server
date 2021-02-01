@@ -1,4 +1,5 @@
 # hiking-backend
+部署版本連結：[https://hiking-backend.herokuapp.com/](https://hiking-backend.herokuapp.com/)
 
 ## 專案安裝步驟
 
