@@ -16,7 +16,7 @@ php artisan serve
 
 ### 若使用SQLITE的額外步驟
 ```
-sudo apt-get install php-sqlite3
+sudo apt-get install php-sqlite3 // 以Ubuntu為例，其他作業系統則是安裝對應版本的sqlite
 touch ./database/hiking.sqlite
 ```
 
