@@ -22,7 +22,7 @@ use App\Http\Controllers\PassportAuthController;
 
 Route::get('incorrectToken', function () {
     return response(['Status' => 'incorrect token!'], 401);
-})->name('incorrectToken');     
+})->name('incorrectToken');
 
 Route::post('register', [PassportAuthController::class, 'register']);
 Route::middleware('auth:api')->post('profile', [PassportAuthController::class, 'createProfile']);
