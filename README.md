@@ -4,20 +4,21 @@
 ## 專案安裝步驟
 
 ```
-npm i
-composer i
-cp .env.example .env
-// (在.env填入環境變數，內容另貼於Trello)
-php artisan migrate:fresh --seed 
-php artisan passport:install
-// (測試能否運作)
-php artisan serve
+npm i // 安裝node.js套件，內建畫面模板使用的
+composer i // 安裝php套件，後端用到的
+cp .env.example .env // 並在.env填入環境變數
+php artisan key:generate // 產生網站專屬密鑰(寫入.env環境變數)，確保加密資料安全性(跳過這步網站會無法運作)
+
+php artisan migrate:fresh --seed // 將資料庫初始化，且有seeder時會載入(重複執行會清空資料)
+php artisan passport:install // 建立產生安全Access Token 的加密金鑰，才能執行
+php artisan serve // 測試能否運作
 ```
 
 ### 若使用SQLITE的額外步驟
 ```
 sudo apt-get install php-sqlite3 // 以Ubuntu為例，其他作業系統則是安裝對應版本的sqlite
 touch ./database/hiking.sqlite
+// 將.env的DB_CONNECTION=mysql改成DB_CONNECTION=sqlite，SESSION_DRIVER=database改成SESSION_DRIVER=file
 ```
 
 ## 身分驗證
@@ -54,13 +55,13 @@ touch ./database/hiking.sqlite
 2. 回傳格式如下：
 ```
 {
-  "Status":"Your profile is created!"
+  "status":"your profile is created!"
 }
 ```
 3. 錯誤的回應(代表要建立資料的帳號不存在)：
 ```
 {
-    "error": "This account is missing!"
+    "error": "this account is missing!"
 }
 ```
 
@@ -85,13 +86,13 @@ touch ./database/hiking.sqlite
 1. 以/api/index為例，驗證成功會收到：
 ```
 {
-    "Status": "Logged!"
+    "status": "logged!"
 }
 ```
 2. token錯誤的回應：
 ```
 {
-    "Status": "incorrect token"
+    "status": "incorrect token"
 }
 ```
 
