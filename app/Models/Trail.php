@@ -16,4 +16,9 @@ class Trail extends Model
     {
         return $this->belongsToMany('App\Models\Collection','collection_trail','trail_id','collection_id');
     }
+
+    public function location()
+    {
+        return $this->belongsTo('App\Models\Location');
+    }
 }
