@@ -11,4 +11,9 @@ class Trail extends Model
     protected $table = 'trails';
     protected $primaryKey = 'id';
     protected $fillable = ['title', 'location_id', 'distance', 'coverImage', 'difficulty', 'evaluation', 'altitude'];
+
+    public function collections()
+    {
+        return $this->belongsToMany('App\Models\Collection','collection_trail','trail_id','collection_id');
+    }
 }

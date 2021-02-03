@@ -11,4 +11,8 @@ class Collection extends Model
     protected $table ='collections';
     protected $primaryKey ='id';
     protected $fillable =['name','subTitle','iconImage'];
+
+    public function trails(){
+        return $this->belongsToMany('App\Models\Trail','collection_trail','collection_id','trail_id');
+    }
 }
