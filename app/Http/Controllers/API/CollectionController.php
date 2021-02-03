@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Collection;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
@@ -14,7 +15,8 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        //
+        $result = Collection::get();
+        return $result;
     }
 
     /**
@@ -36,7 +38,8 @@ class CollectionController extends Controller
      */
     public function show($id)
     {
-        //
+        $result=Collection::with('trails')->where('id',$id)->get();
+        return $result;  
     }
 
     /**
