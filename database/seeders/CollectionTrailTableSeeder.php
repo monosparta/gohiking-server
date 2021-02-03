@@ -17,43 +17,43 @@ class CollectionTrailTableSeeder extends Seeder
         DB::table('collection_trail')->delete();
         $datas=[
             [
-                'collection_id'=>11,
-                'trail_id'=>51
+                'collection_id'=>2,
+                'trail_id'=>6,
             ],
             [
-                'collection_id'=>11,
-                'trail_id'=>31,
+                'collection_id'=>2,
+                'trail_id'=>4,
             ],
             [
-                'collection_id'=>41,
-                'trail_id'=>41,
+                'collection_id'=>5,
+                'trail_id'=>5,
             ],
             [
-                'collection_id'=>31,
+                'collection_id'=>4,
                 'trail_id'=>1,
             ],
             [
-                'collection_id'=>21,
-                'trail_id'=>21,
+                'collection_id'=>3,
+                'trail_id'=>3,
             ],
             [
-                'collection_id'=>31,
-                'trail_id'=>11,
+                'collection_id'=>4,
+                'trail_id'=>2,
             ],[
-                'collection_id'=>41,
-                'trail_id'=>31,
+                'collection_id'=>5,
+                'trail_id'=>4,
             ],
             [
-                'collection_id'=>41,
-                'trail_id'=>21,
+                'collection_id'=>5,
+                'trail_id'=>3,
             ],
             [
-                'collection_id'=>11,
-                'trail_id'=>41,
+                'collection_id'=>2,
+                'trail_id'=>5,
             ],
             [
-                'collection_id'=>61,
-                'trail_id'=>11,
+                'collection_id'=>7,
+                'trail_id'=>2,
             ],
         ];
         foreach ($datas as $data){

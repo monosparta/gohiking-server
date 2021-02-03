@@ -22,31 +22,31 @@ class LocationsTableSeeder extends Seeder
             ],
             [
                 'name'=>'復興區',
-                'county_id'=>21,
+                'county_id'=>3,
             ],
             [
                 'name'=>'復興鄉',
-                'county_id'=>21,
+                'county_id'=>3,
             ],
             [
                 'name'=>'北屯區',
-                'county_id'=>61,
+                'county_id'=>7,
             ],
             [
                 'name'=>'南屯區',
-                'county_id'=>61,
+                'county_id'=>7,
             ],
             [
                 'name'=>'新烏日',
-                'county_id'=>61,
+                'county_id'=>7,
             ],
             [
                 'name'=>'沙鹿區',
-                'county_id'=>61,
+                'county_id'=>7,
             ],
             [
                 'name'=>'谷關區',
-                'county_id'=>61,
+                'county_id'=>7,
             ],
         ];
         foreach ($datas as $data){
