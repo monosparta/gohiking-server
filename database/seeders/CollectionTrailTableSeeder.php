@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CollectionTrail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -57,10 +58,10 @@ class CollectionTrailTableSeeder extends Seeder
             ],
         ];
         foreach ($datas as $data){
-            DB::table('collection_trail')->insert([
-                'collection_id' => $data['collection_id'],
-                'trail_id' => $data['trail_id'],
-                ]);
+            $collection_trail=new CollectionTrail();
+            $collection_trail->collection_id=$data['collection_id'];
+            $collection_trail->trail_id=$data['trail_id'];
+            $collection_trail->save();
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Location;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -50,10 +51,10 @@ class LocationsTableSeeder extends Seeder
             ],
         ];
         foreach ($datas as $data){
-            DB::table('locations')->insert([
-                'name' => $data['name'],
-                'county_id' => $data['county_id'],
-                ]);
+            $location=new Location();
+            $location->name=$data['name'];
+            $location->county_id=$data['county_id'];
+            $location->save();
         }
     }
 }

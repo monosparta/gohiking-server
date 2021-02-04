@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -43,10 +44,10 @@ class CollectionsTableSeeder extends Seeder
             ],
         ];
         foreach ($datas as $data) {
-            DB::table('collections')->insert([
-                'name' => $data['name'],
-                'iconImage'=>$data['iconImage'],
-                ]);
+            $collection = new Collection();
+            $collection->name=$data['name'];
+            $collection->iconImage=$data['iconImage'];
+            $collection->save();
         }
     }
 }

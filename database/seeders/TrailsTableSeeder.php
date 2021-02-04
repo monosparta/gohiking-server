@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Trail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -73,15 +74,15 @@ class TrailsTableSeeder extends Seeder
             
         ];
         foreach ($datas as $data){
-            DB::table('trails')->insert([
-                'title' => $data['title'],
-                'location_id' => $data['location_id'],
-                'distance'=> $data['distance'],
-                'coverImage'=> $data['coverImage'],
-                'difficulty' => $data['difficulty'],
-                'evaluation' => $data['evaluation'],
-                'altitude' => $data['altitude']
-                ]);
+            $trail=new Trail();
+            $trail->title=$data['title'];
+            $trail->location_id=$data['location_id'];
+            $trail->distance=$data['distance'];
+            $trail->coverImage=$data['coverImage'];
+            $trail->difficulty=$data['difficulty'];
+            $trail->evaluation=$data['evaluation'];
+            $trail->altitude=$data['altitude'];
+            $trail->save();
         }
     }
 }
