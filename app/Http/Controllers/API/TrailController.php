@@ -75,7 +75,7 @@ class TrailController extends Controller
      */
     public function show($id)
     {
-        $result = trail::with('location','location.county')->where('id',$id)->get(); //查詢id動作
+        $result = trail::with('location','location.county')->find($id); //查詢id動作
         return $result;
     }
 

@@ -38,8 +38,8 @@ class CollectionController extends Controller
      */
     public function show($id)
     {
-        $result=Collection::with('trails')->where('id',$id)->get();
-        return $result;  
+        $result=Collection::with('trails')->find($id);
+        return $result;
     }
 
     /**
