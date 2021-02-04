@@ -1,5 +1,5 @@
 # hiking-backend
-部署版本連結：[https://hiking-backend.herokuapp.com/](https://hiking-backend.herokuapp.com/)
+部署版本連結：[WIP](#)
 
 ## 專案安裝步驟
 
@@ -17,7 +17,7 @@ php artisan serve // 測試能否運作
 ### 若使用SQLITE的額外步驟
 ```
 sudo apt-get install php-sqlite3 // 以Ubuntu為例，其他作業系統則是安裝對應版本的sqlite
-touch ./database/hiking.sqlite
+touch ./database/database.sqlite
 // 將.env的DB_CONNECTION=mysql改成DB_CONNECTION=sqlite，SESSION_DRIVER=database改成SESSION_DRIVER=file
 ```
 
@@ -96,37 +96,6 @@ touch ./database/hiking.sqlite
 }
 ```
 
-### 原生登入API(不建議使用)
-1. 發送POST /oauth/token，Body(x-www-form-urlencoded)需攜帶：
-
-```
-{
-  "grant_type": "password",
-  "client_id": 2,
-  "client_secret": "(值另貼於Trello)",
-  "username": "(已註冊的email)",
-  "password": "(上述的對應密碼)"
-}
-```
-2. 回傳格式如下：
-```
-{
-    "token_type": "Bearer",
-    "expires_in": 31536000,
-    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9
-    ...(TLDR)",
-    "refresh_token": "def50200b8526c9dda9cf0012ff1f
-    ...(TLDR)"
-}
-```
-3. 之後存取需登入驗證的API時，發送請求需在Headers攜帶以下資訊：
-
-```
-{
-  "Authorization": "Bearer (上一步"access_token"的完整字串)"
-}
-```
-
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -189,4 +158,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
