@@ -15,12 +15,12 @@ pipeline {
                 sh 'composer --version'
             }
         }
-        stage('Checkout Repo') {
-            steps {
-                git url: 'https://github.com/monosparta/gohiking-server.git', branch: 'main'
-                sh 'ls -al'
-            }
-        }
+        // stage('Checkout Repo') {
+        //     steps {
+        //         git url: 'https://github.com/monosparta/gohiking-server.git', branch: 'main'
+        //         sh 'ls -al'
+        //     }
+        // }
         // stage('Make Zip Artifacts') {
         //     steps {
         //         zip zipFile: 'gohiking-server.zip'
