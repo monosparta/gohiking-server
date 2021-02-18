@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Make Zip Artifacts') {
             steps {
-                zip zipFile: 'gohiking-server.zip'
+                zip zipFile: 'gohiking-server.zip', overwrite: true
             }
         }
     }
