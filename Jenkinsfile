@@ -38,7 +38,7 @@ pipeline {
     
     post {
         always {
-            archiveArtifacts artifacts: '*.json', fingerprint: true
+            archiveArtifacts artifacts: '*.zip', fingerprint: true
         }
     }
 }
