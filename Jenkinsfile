@@ -9,7 +9,7 @@ pipeline {
                 echo 'Hello World'
             }
         }
-        stage('Check Env') {
+        stage('Check') {
             steps {
                 sh 'php --version'
                 sh 'composer --version'
@@ -21,11 +21,16 @@ pipeline {
         //         sh 'ls -al'
         //     }
         // }
-        // stage('Make Zip Artifacts') {
-        //     steps {
-        //         zip zipFile: 'gohiking-server.zip'
-        //     }
-        // }
+        stage('Build') {
+            sh 'cp .env.example .env'
+            sh 'php artisan key:generate'
+            sh 'php artisan test'
+        }
+        stage('Make Zip Artifacts') {
+            steps {
+                zip zipFile: 'gohiking-server.zip'
+            }
+        }
     }
     
     post {
