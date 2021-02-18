@@ -23,6 +23,7 @@ pipeline {
         // }
         stage('Build') {
             steps {
+                sh 'composer update'
                 sh 'cp .env.example .env'
                 sh 'php artisan key:generate'
                 sh 'php artisan test'
