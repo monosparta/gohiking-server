@@ -22,9 +22,11 @@ pipeline {
         //     }
         // }
         stage('Build') {
-            sh 'cp .env.example .env'
-            sh 'php artisan key:generate'
-            sh 'php artisan test'
+            steps {
+                sh 'cp .env.example .env'
+                sh 'php artisan key:generate'
+                sh 'php artisan test'
+            }
         }
         stage('Make Zip Artifacts') {
             steps {
