@@ -1,3 +1,101 @@
+# hiking-backend
+部署版本連結：[WIP](#)
+
+## 專案安裝步驟
+
+```
+npm i // 安裝node.js套件，內建畫面模板使用的
+composer i // 安裝php套件，後端用到的
+cp .env.example .env // 並在.env填入環境變數
+php artisan key:generate // 產生網站專屬密鑰(寫入.env環境變數)，確保加密資料安全性(跳過這步網站會無法運作)
+
+php artisan migrate:fresh --seed // 將資料庫初始化，且有seeder時會載入(重複執行會清空資料)
+php artisan passport:install // 建立產生安全Access Token 的加密金鑰，才能執行
+php artisan serve // 測試能否運作
+```
+
+### 若使用SQLITE的額外步驟
+```
+sudo apt-get install php-sqlite3 // 以Ubuntu為例，其他作業系統則是安裝對應版本的sqlite
+touch ./database/database.sqlite
+// 將.env的DB_CONNECTION=mysql改成DB_CONNECTION=sqlite，SESSION_DRIVER=database改成SESSION_DRIVER=file
+```
+
+## 身分驗證
+
+### 帳密註冊
+1. 發送POST /api/register，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "email": "(使用者輸入的email)",
+  "password": "(使用者輸入的對應密碼)"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+}
+```
+3. 前端若有設定自動攜帶上述token於headers，註冊後不必額外登入即可使用
+
+### 建立個人資料
+0. 前端需設定攜帶上述token於headers
+1. 發送POST /api/profile，Body(x-www-form-urlencoded)需攜帶：
+```
+{
+  "name": "姓名",
+  "gender": "性別",
+  "phone_number": "手機號碼",
+  "birth": "生日",
+  "live": "居住地"
+}
+```
+2. 回傳格式如下：
+```
+{
+  "status":"your profile is created!"
+}
+```
+3. 錯誤的回應(代表要建立資料的帳號不存在)：
+```
+{
+    "error": "this account is missing!"
+}
+```
+
+### 帳密登入
+1. 發送POST /api/login，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "email": "(使用者輸入的email)",
+  "password": "(使用者輸入的對應密碼)"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+}
+```
+3. 前端需設定攜帶上述token於headers，才能成立登入狀態存取需驗證的API
+
+### 登入測試
+1. 以/api/index為例，驗證成功會收到：
+```
+{
+    "status": "logged!"
+}
+```
+2. token錯誤的回應：
+```
+{
+    "status": "incorrect token"
+}
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
