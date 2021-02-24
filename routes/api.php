@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\CollectionController;
+use App\Http\Controllers\API\TrailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +34,7 @@ Route::post('login', [PassportAuthController::class, 'login']);
 Route::middleware('auth:api')->get('index', function () {
     return ['Status' => 'Logged!'];
 });
+
+Route::resource('/collection',CollectionController::class);
+Route::resource('/trail',TrailController::class);
+
