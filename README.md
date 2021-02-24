@@ -1,5 +1,5 @@
 # hiking-backend
-部署版本連結：[WIP](#)
+部署版本連結：[https://gohiking-server.herokuapp.com](https://gohiking-server.herokuapp.com)
 
 ## 專案安裝步驟
 
