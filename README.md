@@ -83,7 +83,7 @@ touch ./database/database.sqlite
 3. 前端需設定攜帶上述token於headers，才能成立登入狀態存取需驗證的API
 
 ### 登入測試
-1. 以/api/index為例，驗證成功會收到：
+1. 以發送GET /api/index為例，驗證成功會收到：
 ```
 {
     "status": "logged!"
