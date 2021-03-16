@@ -50,7 +50,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request = $request->all();
-        $user = User::find($id);
+        $user = new User();
+        $user =  $user->find($id);
         foreach ($request as $key => $item) {
             $a =  $key;
             switch ($key) {
