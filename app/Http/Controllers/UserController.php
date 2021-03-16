@@ -50,8 +50,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request = $request->all();
-        $user = new User();
-        $user =  $user->find($id);
+        $user = User::find($id);
         foreach ($request as $key => $item) {
             switch ($key) {
                 case 'name':
@@ -64,7 +63,7 @@ class UserController extends Controller
                     $user->phone_number = $item;
                     break;
                 case 'birth':
-                    $user->birth = $item;
+                    $user->birth  = $item;
                     break;
                 default:
                     # code...
