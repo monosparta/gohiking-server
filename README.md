@@ -109,7 +109,7 @@ touch ./database/database.sqlite
 ```
 
 ### 忘記密碼
-1. 發送POST /password/forget，Body(x-www-form-urlencoded)只需攜帶：
+1. 發送POST /api/password/forget，Body(x-www-form-urlencoded)只需攜帶：
 
 ```
 {
@@ -125,7 +125,7 @@ touch ./database/database.sqlite
 3. 同時，只要查有對應帳號的信箱，也會用電子郵件發送4位數字的驗證碼(如4, 3, 2, 1)，主旨為：請確認修改密碼
 
 ### 確認驗證碼
-1. 發送POST /password/confirm，Body(x-www-form-urlencoded)需攜帶：
+1. 發送POST /api/password/confirm，Body(x-www-form-urlencoded)需攜帶：
 
 ```
 {
@@ -150,7 +150,7 @@ touch ./database/database.sqlite
 
 ### 重設密碼
 0. 前端需設定攜帶token於headers
-1. 發送POST /password/change，Body(x-www-form-urlencoded)需攜帶：
+1. 發送POST /api/password/change，Body(x-www-form-urlencoded)需攜帶：
 ```
 {
   "password": "(欲重設的密碼)"
