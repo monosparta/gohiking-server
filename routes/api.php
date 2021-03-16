@@ -31,6 +31,10 @@ Route::middleware('auth:api')->post('profile', [PassportAuthController::class, '
 
 Route::post('login', [PassportAuthController::class, 'login']);
 
+Route::post('/password/forget', [PassportAuthController::class, 'forgetPassword']);
+Route::post('/password/confirm', [PassportAuthController::class, 'confirmVerificationCodes']);
+Route::middleware('auth:api')->post('/password/change', [PassportAuthController::class, 'changePassword']);
+
 Route::middleware('auth:api')->get('index', function () {
     return ['Status' => 'Logged!'];
 });
