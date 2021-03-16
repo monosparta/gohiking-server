@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\TrailController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +38,4 @@ Route::middleware('auth:api')->get('index', function () {
 
 Route::resource('/collection',CollectionController::class);
 Route::resource('/trail',TrailController::class);
-
+Route::resource('/user',UserController::class);
