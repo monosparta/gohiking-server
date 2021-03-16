@@ -53,19 +53,18 @@ class UserController extends Controller
         $user = new User();
         $user =  $user->find($id);
         foreach ($request as $key => $item) {
-            $a =  $key;
             switch ($key) {
                 case 'name':
-                    $user->name = $request[$key];
+                    $user->name = $item;
                     break;
                 case 'gender':
-                    $user->gender = $request[$key];
+                    $user->gender = $item;
                     break;
                 case 'phone_number':
-                    $user->phone_number = $request[$key];
+                    $user->phone_number = $item;
                     break;
                 case 'birth':
-                    $user->birth = $request[$key];
+                    $user->birth = $item;
                     break;
                 default:
                     # code...
