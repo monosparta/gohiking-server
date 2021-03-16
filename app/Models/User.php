@@ -34,7 +34,8 @@ class User extends Authenticatable
         'phone_number',
         'phone_region',
         'birth',
-        'live'
+        'live',
+        'image'
     ];
 
     /**
@@ -66,4 +67,10 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function counties()
+    {
+        return $this->belongsTo(County::class);
+    }
 }

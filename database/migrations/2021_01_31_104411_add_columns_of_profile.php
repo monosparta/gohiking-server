@@ -13,7 +13,7 @@ class AddColumnsOfProfile extends Migration
      */
     public function up()
     {
-        Schema::table('users', function($table){
+        Schema::table('users', function ($table) {
             $table->string('name')->nullable()->change();
             $table->string('gender')->nullable();
             $table->string('phone_number')->unique()->nullable();

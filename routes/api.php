@@ -1,12 +1,14 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\TrailController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\PassportAuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ClassificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,9 @@ Route::middleware('auth:api')->get('index', function () {
     return ['Status' => 'Logged!'];
 });
 
-Route::resource('/collection',CollectionController::class);
-Route::resource('/trail',TrailController::class);
-Route::resource('/user',UserController::class);
+Route::resource('/collection', CollectionController::class);
+Route::resource('/trail', TrailController::class);
+Route::resource('/user', UserController::class);
+Route::resource('/home', HomeController::class);
+Route::resource('/article', ArticleController::class);
+Route::resource('/classification', ClassificationController::class);

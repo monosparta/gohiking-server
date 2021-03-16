@@ -36,8 +36,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $result = User::find($id);
-        return $result;
+        $user = User::with('counties')->find($id);
+        return  $user;
     }
 
     /**
@@ -50,7 +50,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request = $request->all();
-        $user = User::find($id);
+        $user = User::with('counties')->find($id);
         foreach ($request as $key => $item) {
             switch ($key) {
                 case 'name':
@@ -63,15 +63,22 @@ class UserController extends Controller
                     $user->phone_number = $item;
                     break;
                 case 'birth':
-                    $user->birth  = $item;
+                    $user->birth = $item;
+                    break;
+                case 'image':
+                    $user->image = $item;
+                    break;
+                case 'counties_id':
+                    $user->counties_id = $item;
                     break;
                 default:
                     # code...
                     break;
             }
         }
-        $result = $user->save();
-        return $result;
+        $user->save();
+        $user = User::with('counties')->find($id);
+        return $user;
     }
 
     /**

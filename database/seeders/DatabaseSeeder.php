@@ -15,10 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CountiesTableSeeder::class);
         $this->call(LocationsTableSeeder::class);
-        $this->call(TrailsTableSeeder::class);
         $this->call(CollectionsTableSeeder::class);
         $this->call(CollectionTrailTableSeeder::class);
         $this->call(ArticlesSeeder::class);
+        $this->call(TrailsTableSeeder::class);
+        $this->call(ClassificationsSeeder::class);
         $this->call(UsersSeeder::class);
     }
 }
