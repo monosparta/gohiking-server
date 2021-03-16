@@ -55,16 +55,16 @@ class UserController extends Controller
             $a =  $key;
             switch ($key) {
                 case 'name':
-                    $user[$key] = $request[$key];
+                    $user->name = $request[$key];
                     break;
                 case 'gender':
-                    $user[$key] = $request[$key];
+                    $user->gender = $request[$key];
                     break;
                 case 'phone_number':
-                    $user[$key] = $request[$key];
+                    $user->phone_number = $request[$key];
                     break;
                 case 'birth':
-                    $user[$key] = $request[$key];
+                    $user->birth = $request[$key];
                     break;
                 default:
                     # code...
