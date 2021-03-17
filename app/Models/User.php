@@ -69,8 +69,8 @@ class User extends Authenticatable
     ];
 
 
-    public function counties()
+    public function county()
     {
-        return $this->belongsTo(County::class);
+        return $this->hasOne(County::class, 'id', 'county_id');
     }
 }

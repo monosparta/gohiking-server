@@ -26,4 +26,9 @@ class Trail extends Model
     {
         return $this->belongsTo(Article::class);
     }
+
+    public function county()
+    {
+        return $this->belongsTo(County::class);
+    }
 }

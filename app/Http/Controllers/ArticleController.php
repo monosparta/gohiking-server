@@ -36,7 +36,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $articles = Article::with('trails')->find($id);
+        $articles = Article::with('trails', 'trails.location', 'trails.location.county')->find($id);
         return $articles;
     }
 

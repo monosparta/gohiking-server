@@ -15,7 +15,7 @@ class AddClassificationsForeignToTrailsTable extends Migration
     {
         Schema::table('trails', function (Blueprint $table) {
             $table->unsignedInteger('classification_id')->nullable();
-            $table->foreign('classification_id')->references('id')->on('articles')->onDelete('cascade');
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
         });
     }
 

@@ -46,7 +46,7 @@ class ClassificationController extends Controller
      */
     public function show($id)
     {
-        $classifications = Classification::with('trails', 'trails.location')->find($id);
+        $classifications = Classification::with('trails', 'trails.location', 'trails.location.county')->find($id);
         return $classifications;
     }
 
