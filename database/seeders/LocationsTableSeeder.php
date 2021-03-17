@@ -15,45 +15,44 @@ class LocationsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('locations')->delete();
-        $datas=[
+        $datas = [
             [
-                'name'=>'北投區',
-                'county_id'=>1,
+                'name' => '北投區',
+                'county_id' => 1,
             ],
             [
-                'name'=>'復興區',
-                'county_id'=>3,
+                'name' => '復興區',
+                'county_id' => 3,
             ],
             [
-                'name'=>'復興鄉',
-                'county_id'=>3,
+                'name' => '復興鄉',
+                'county_id' => 3,
             ],
             [
-                'name'=>'北屯區',
-                'county_id'=>7,
+                'name' => '北屯區',
+                'county_id' => 7,
             ],
             [
-                'name'=>'南屯區',
-                'county_id'=>7,
+                'name' => '南屯區',
+                'county_id' => 7,
             ],
             [
-                'name'=>'新烏日',
-                'county_id'=>7,
+                'name' => '新烏日',
+                'county_id' => 7,
             ],
             [
-                'name'=>'沙鹿區',
-                'county_id'=>7,
+                'name' => '沙鹿區',
+                'county_id' => 7,
             ],
             [
-                'name'=>'谷關區',
-                'county_id'=>7,
+                'name' => '谷關區',
+                'county_id' => 7,
             ],
         ];
-        foreach ($datas as $data){
-            $location=new Location();
-            $location->name=$data['name'];
-            $location->county_id=$data['county_id'];
+        foreach ($datas as $data) {
+            $location = new Location();
+            $location->name = $data['name'];
+            $location->county_id = $data['county_id'];
             $location->save();
         }
     }

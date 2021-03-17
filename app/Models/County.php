@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class County extends Model
 {
     use HasFactory;
-    protected $table ='counties';
-    protected $primaryKey ='id';
-    protected $fillable =['name'];
+    protected $table = 'counties';
+    protected $primaryKey = 'id';
+    protected $fillable = ['name'];
+
+
+    public function users()
+    {
+        return $this->hasOne(User::class);
+    }
 }

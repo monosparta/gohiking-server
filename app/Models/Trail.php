@@ -14,11 +14,26 @@ class Trail extends Model
 
     public function collections()
     {
-        return $this->belongsToMany('App\Models\Collection','collection_trail','trail_id','collection_id');
+        return $this->belongsToMany('App\Models\Collection', 'collection_trail', 'trail_id', 'collection_id');
     }
 
     public function location()
     {
         return $this->belongsTo('App\Models\Location');
+    }
+
+    public function articles()
+    {
+        return $this->belongsTo(Article::class);
+    }
+
+    public function county()
+    {
+        return $this->belongsTo(County::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany('App/Model/User');
     }
 }
