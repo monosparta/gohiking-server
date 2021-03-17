@@ -24,10 +24,13 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'email' => $this->faker->email,
+            'password' => $this->faker->swiftBicNumber,
+            'gender' =>  $this->faker->boolean ? '1' : '0',
+            'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100),
+            'phone_number' =>  $this->faker->phoneNumber,
+            'birth' =>  $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'county_id' => $this->faker->numberBetween(1, 10)
         ];
     }
 }

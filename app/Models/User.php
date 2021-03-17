@@ -34,7 +34,8 @@ class User extends Authenticatable
         'phone_number',
         'phone_region',
         'birth',
-        'live'
+        'live',
+        'image'
     ];
 
     /**
@@ -66,4 +67,15 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function county()
+    {
+        return $this->hasOne(County::class, 'id', 'county_id');
+    }
+
+    public function trails()
+    {
+        return $this->belongsToMany(Trail::class, 'user_trails');
+    }
 }
