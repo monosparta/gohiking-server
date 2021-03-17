@@ -76,6 +76,6 @@ class User extends Authenticatable
 
     public function trails()
     {
-        return $this->belongsToMany('App\Model\Trail');
+        return $this->belongsToMany(Trail::class, 'user_trails');
     }
 }

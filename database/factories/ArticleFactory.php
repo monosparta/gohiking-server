@@ -21,10 +21,21 @@ class ArticleFactory extends Factory
      */
     public function definition()
     {
+        $str = '';
         return [
-            'title' => $this->faker->text(20),
-            'content' => $this->faker->paragraph,
-            'image' => $this->faker->imageUrl($width = 640, $height = 480, 'cats')
+            'title' => $this->faker->catchPhrase,
+            'content' => $this->random($str),
+            'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100)
         ];
+    }
+
+    private function random($str)
+    {
+        $count = 0;
+        while ($count < rand(1, 5)) {
+            $str .= $this->faker->catchPhrase;
+            $count++;
+        }
+        return $str;
     }
 }

@@ -27,9 +27,9 @@ class UserFactory extends Factory
             'email' => $this->faker->email,
             'password' => $this->faker->swiftBicNumber,
             'gender' =>  $this->faker->boolean ? '1' : '0',
-            'image' => $this->faker->imageUrl($width = 640, $height = 480, 'cats'),
-            'phone_number' =>  $this->faker->tollFreePhoneNumber,
-            'birth' =>  $this->faker->DateTime('2007-05-29 22:30:48', 'Europe/Paris'),
+            'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100),
+            'phone_number' =>  $this->faker->phoneNumber,
+            'birth' =>  $this->faker->date($format = 'Y-m-d', $max = 'now'),
             'county_id' => $this->faker->numberBetween(1, 10)
         ];
     }
