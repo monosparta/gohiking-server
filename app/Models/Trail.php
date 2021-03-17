@@ -31,4 +31,9 @@ class Trail extends Model
     {
         return $this->belongsTo(County::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App/Model/User');
+    }
 }

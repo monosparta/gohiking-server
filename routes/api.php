@@ -44,3 +44,4 @@ Route::resource('/user', UserController::class);
 Route::resource('/home', HomeController::class);
 Route::resource('/article', ArticleController::class);
 Route::resource('/classification', ClassificationController::class);
+Route::resource('/favorite', FavoriteController::class);

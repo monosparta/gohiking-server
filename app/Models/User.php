@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(County::class, 'id', 'county_id');
     }
+
+    public function trails()
+    {
+        return $this->belongsToMany('App\Model\Trail');
+    }
 }
