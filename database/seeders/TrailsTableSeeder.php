@@ -7,7 +7,6 @@ use App\Models\Location;
 use App\Models\Trail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
-use SebastianBergmann\LinesOfCode\Counter;
 
 class TrailsTableSeeder extends Seeder
 {
