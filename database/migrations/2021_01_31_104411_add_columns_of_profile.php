@@ -18,7 +18,6 @@ class AddColumnsOfProfile extends Migration
             $table->boolean('gender');
             $table->string('phone_number')->unique()->nullable();
             $table->date('birth')->nullable();
-            $table->string('live')->nullable();
         });
     }
 
@@ -31,7 +30,7 @@ class AddColumnsOfProfile extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('name')->change();
-            $table->dropColumn('gender', 'phone_number', 'birth', 'live');
+            $table->dropColumn('gender', 'phone_number', 'birth');
         });
     }
 }
