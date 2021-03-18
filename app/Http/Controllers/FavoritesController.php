@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserTrail;
+use App\Models\Favorite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class FavoritesController extends Controller
      */
     public function index()
     {
-        $trails = DB::table('user_trails')->select('user_id', 'trail_id')->get()->groupBy('user_id');
+        $trails = DB::table('favorites')->select('user_id', 'trail_id')->get()->groupBy('user_id');
         return $trails;
     }
 
@@ -33,10 +33,10 @@ class FavoritesController extends Controller
             'user_id' => 'required',
             'trail_id' => 'required',
         ]);
-        $trails = DB::table('user_trails')->where('user_id','=',$request->user_id)->where('trail_id','=',$request->trail_id)->get();
+        $trails = DB::table('favorites')->where('user_id','=',$request->user_id)->where('trail_id','=',$request->trail_id)->get();
         if(count($trails)==0)
         {
-            $UserTrail= new UserTrail;
+            $UserTrail= new Favorite;
             $UserTrail->user_id= $request->user_id;
             $UserTrail->trail_id=$request->trail_id;
             $UserTrail->save();
@@ -56,7 +56,7 @@ class FavoritesController extends Controller
     public function show($id)
     {
         //sql SELECT trail_id FROM `user_trails` WHERE user_id=$id
-        $trails = DB::table('user_trails')->where('user_id', $id)->leftJoin('trails', 'user_trails.trail_id', '=', 'trails.id')->get();
+        $trails = DB::table('favorites')->where('user_id', $id)->leftJoin('trails', 'user_trails.trail_id', '=', 'trails.id')->get();
         return $trails;
     }
 

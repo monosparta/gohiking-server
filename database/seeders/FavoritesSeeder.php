@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\UserTrail;
+use App\Models\Favorite;
 use Illuminate\Database\Seeder;
 
-class UserTrailSeeder extends Seeder
+class FavoritesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class UserTrailSeeder extends Seeder
      */
     public function run()
     {
-        UserTrail::factory()->count(10)->create();
+        Favorite::factory()->count(10)->create();
     }
 }

@@ -34,6 +34,6 @@ class Trail extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class,'user_trail','trail_id','user_id');
+        return $this->belongsToMany(User::class,'favorites','trail_id','user_id');
     }
 }
