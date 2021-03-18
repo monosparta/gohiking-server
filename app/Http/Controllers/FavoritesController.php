@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserTrail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 
 class FavoritesController extends Controller
 {
@@ -13,7 +16,8 @@ class FavoritesController extends Controller
      */
     public function index()
     {
-        //
+        $trails = DB::table('user_trails')->select('user_id','trail_id')->get()->groupBy('user_id');
+        return $trails;
     }
 
     /**
@@ -25,6 +29,15 @@ class FavoritesController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'user_id' => 'required',
+            'trail_id' => 'required',
+        ]);
+        UserTrail::created([
+            'user_id'=>$request->user_id,'trail_id'=>$request->trail_id
+        ]);
+        // DB::table('user_trails')->insert(['user_id'=>$request->user_id,'trail_id'=>$request->trail_id]);
+
     }
 
     /**
@@ -35,7 +48,9 @@ class FavoritesController extends Controller
      */
     public function show($id)
     {
-        //
+        //SELECT trail_id FROM `user_trails` WHERE user_id=$id
+        $trails = DB::table('user_trails')->where('user_id',$id)->leftJoin('trails','user_trails.trail_id','=','trails.id')->get();
+        return $trails;
     }
 
     /**
@@ -48,6 +63,7 @@ class FavoritesController extends Controller
     public function update(Request $request, $id)
     {
         //
+
     }
 
     /**
@@ -56,8 +72,9 @@ class FavoritesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         //
+        $trails = DB::table('user_trails')->where('user_id','=',$request,'trail_id','=',$id)->delete();
     }
 }

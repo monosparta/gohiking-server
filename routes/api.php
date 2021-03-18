@@ -9,6 +9,7 @@ use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\FavoritesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,4 +45,4 @@ Route::resource('/user', UserController::class);
 Route::resource('/home', HomeController::class);
 Route::resource('/article', ArticleController::class);
 Route::resource('/classification', ClassificationController::class);
-Route::resource('/favorite', FavoriteController::class);
+Route::resource('/favorite', FavoritesController::class);
