@@ -9,6 +9,11 @@ class UserTrail extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'trail_id',
+    ];
+
     public function trail()
     {
         return $this->belongsTo(Trail::class);

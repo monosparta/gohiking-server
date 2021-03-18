@@ -14,7 +14,7 @@ class CreateUserTrailsTable extends Migration
     public function up()
     {
         Schema::create('user_trails', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('user_id');
             $table->integer('trail_id');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateUserTrailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_trail');
+        Schema::dropIfExists('user_trails');
     }
 }
