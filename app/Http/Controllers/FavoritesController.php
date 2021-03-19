@@ -33,16 +33,13 @@ class FavoritesController extends Controller
             'user_id' => 'required',
             'trail_id' => 'required',
         ]);
-        $trails = DB::table('favorites')->where('user_id','=',$request->user_id)->where('trail_id','=',$request->trail_id)->get();
-        if(count($trails)==0)
-        {
-            $UserTrail= new Favorite;
-            $UserTrail->user_id= $request->user_id;
-            $UserTrail->trail_id=$request->trail_id;
+        $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
+        if (count($trails) == 0) {
+            $UserTrail = new Favorite;
+            $UserTrail->user_id = $request->user_id;
+            $UserTrail->trail_id = $request->trail_id;
             $UserTrail->save();
-        }
-        else
-        {
+        } else {
             return 'exist data';
         }
     }
@@ -81,5 +78,16 @@ class FavoritesController extends Controller
     public function destroy(Request $request)
     {
         //nothing
+    }
+    public function delete(Request $request)
+    {
+        //
+        $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
+        if (count($trails) == 0) {
+            return 'not exist';
+        } else {
+            $trail = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->pluck('id');
+            Favorite::destroy($trail);
+        }
     }
 }

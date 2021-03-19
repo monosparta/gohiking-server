@@ -23,18 +23,6 @@ class ClassificationFactory extends Factory
     {
         return [
             'title' => $this->faker->catchPhrase,
-            'content' => $this->random(),
-            'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100)
         ];
-    }
-
-    private function random($str = '')
-    {
-        $count = 0;
-        while ($count < rand(1, 5)) {
-            $str .= $this->faker->catchPhrase;
-            $count++;
-        }
-        return $str;
     }
 }

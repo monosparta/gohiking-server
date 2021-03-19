@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\CountryCode;
 use App\Models\County;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,7 +41,9 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('county')->find($id);
-        return  $user;
+        $countrycodes = CountryCode::all();
+
+        return  ['users' => $user, 'countrycodes' => $countrycodes];
     }
 
     /**
@@ -73,6 +76,9 @@ class UserController extends Controller
                     $user[$key] = $item;
                     break;
                 case 'gender':
+                    $user[$key] = $item;
+                    break;
+                case 'country_code_id':
                     $user[$key] = $item;
                     break;
                 case 'phone_number':
