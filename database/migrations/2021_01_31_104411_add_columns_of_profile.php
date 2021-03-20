@@ -13,11 +13,11 @@ class AddColumnsOfProfile extends Migration
      */
     public function up()
     {
-        Schema::table('users', function($table){
+        Schema::table('users', function ($table) {
             $table->string('name')->nullable()->change();
-            $table->string('gender')->nullable();
+            $table->boolean('gender');
             $table->string('phone_number')->unique()->nullable();
-            $table->datetime('birth')->nullable();
+            $table->date('birth')->nullable();
             $table->string('live')->nullable();
         });
     }
