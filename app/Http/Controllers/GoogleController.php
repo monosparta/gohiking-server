@@ -18,6 +18,7 @@ class GoogleController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
+            // print_r($user); // 取得可讀取的資料種類
             $findUser = User::where('email', $user->email)
             ->orWhere( 'google_id', $user->id)
             ->first();
@@ -45,7 +46,8 @@ class GoogleController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id' => $user->id,
-                    'password' => bcrypt($user->token)
+                    'password' => bcrypt($user->token),
+                    'image' => $user->avatar,
                 ]);
                 $newUser->save();
                 Auth::login($newUser);
