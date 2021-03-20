@@ -25,7 +25,8 @@ class PassportAuthController extends Controller
         } else {
             $user = User::create([
                 'email' => $request->email,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'image' => 'https://via.placeholder.com/500x400', // 先使用空白圖片
             ]);
 
             // 預先產生與回傳前端存取需驗證身分的API時，於headers攜帶的token，即可註冊後直接登入使用
