@@ -25,7 +25,8 @@ class PassportAuthController extends Controller
         } else {
             $user = User::create([
                 'email' => $request->email,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'image' => 'https://via.placeholder.com/500x400', // 先使用空白圖片
             ]);
 
             // 預先產生與回傳前端存取需驗證身分的API時，於headers攜帶的token，即可註冊後直接登入使用
@@ -124,13 +125,14 @@ class PassportAuthController extends Controller
     public function confirmVerificationCodes(Request $request)
     {
         $this->validate($request, [
+            'email' => 'required',
             'verificationCode0' => 'required',
             'verificationCode1' => 'required',
             'verificationCode2' => 'required',
             'verificationCode3' => 'required',
         ]);
 
-        $findUser = User::where('verification_code_0', $request->verificationCode0)->where('verification_code_1', $request->verificationCode1)->where('verification_code_2', $request->verificationCode2)->where('verification_code_3', $request->verificationCode3)->first();
+        $findUser = User::where('email', $request->email)->where('verification_code_0', $request->verificationCode0)->where('verification_code_1', $request->verificationCode1)->where('verification_code_2', $request->verificationCode2)->where('verification_code_3', $request->verificationCode3)->first();
 
         if ($findUser) {
             $token = $findUser->createToken('LaravelAuthApp')->accessToken;

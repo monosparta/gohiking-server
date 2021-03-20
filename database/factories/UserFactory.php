@@ -22,10 +22,14 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        // 將產生密碼的變數移到上面，並改從後端顯示明碼
+        $originalPassword = $this->faker->swiftBicNumber;
+        error_log($originalPassword);
+
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->email,
-            'password' => $this->faker->swiftBicNumber,
+            'password' => bcrypt($originalPassword), // 僅儲存雜湊過的密碼，以符合資安邊準
             'gender' =>  $this->faker->boolean ? '1' : '0',
             'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100),
             'phone_number' =>  $this->faker->phoneNumber,
