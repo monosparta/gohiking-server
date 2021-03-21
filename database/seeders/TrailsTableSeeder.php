@@ -15,15 +15,6 @@ class TrailsTableSeeder extends Seeder
      */
     public function run()
     {
-        function autoIncrementTweak($id)
-        {
-            $range = 4; // 根據ClearDB設定
-            return $id * 10 - 10 + $range;
-
-            // return $id; // 本機設定
-        }
-
-
         $datas = [
             [
                 'title' => '東眼山自導式步道',
