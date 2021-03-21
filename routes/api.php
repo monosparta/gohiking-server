@@ -35,7 +35,7 @@ Route::middleware('auth:api')->post('profile', [PassportAuthController::class, '
 
 Route::post('login', [PassportAuthController::class, 'login']);
 
-Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::post('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::post('/password/forget', [PassportAuthController::class, 'forgetPassword']);
 Route::post('/password/confirm', [PassportAuthController::class, 'confirmVerificationCodes']);
