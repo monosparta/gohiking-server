@@ -15,59 +15,45 @@ class LocationsTableSeeder extends Seeder
      */
     public function run()
     {
-        function cleardbAutoIncrement($id) {
+        function autoIncrementTweak($id) {
             $range = 4; // 根據ClearDB設定
             return $id*10-10+$range;
+
+            // return $id; // 本機設定
         }
 
         $datas = [
             [
                 'name' => '北投區',
-                'county_id' =>
-                // 1,
-                cleardbAutoIncrement(1),
+                'county_id' => autoIncrementTweak(1),
             ],
             [
                 'name' => '復興區',
-                'county_id' =>
-                // 3,
-                cleardbAutoIncrement(3),
+                'county_id' => autoIncrementTweak(3),
             ],
             [
                 'name' => '復興鄉',
-                'county_id' =>
-                // 3,
-                cleardbAutoIncrement(3),
+                'county_id' => autoIncrementTweak(3),
             ],
             [
                 'name' => '北屯區',
-                'county_id' =>
-                // 7,
-                cleardbAutoIncrement(7),
+                'county_id' => autoIncrementTweak(7),
             ],
             [
                 'name' => '南屯區',
-                'county_id' =>
-                // 7,
-                cleardbAutoIncrement(7),
+                'county_id' => autoIncrementTweak(7),
             ],
             [
                 'name' => '新烏日',
-                'county_id' =>
-                // 7,
-                cleardbAutoIncrement(7),
+                'county_id' => autoIncrementTweak(7),
             ],
             [
                 'name' => '沙鹿區',
-                'county_id' =>
-                // 7,
-                cleardbAutoIncrement(7),
+                'county_id' => autoIncrementTweak(7),
             ],
             [
                 'name' => '谷關區',
-                'county_id' =>
-                // 7,
-                cleardbAutoIncrement(7),
+                'county_id' => autoIncrementTweak(7),
             ],
         ];
         foreach ($datas as $data) {
