@@ -13,6 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        function autoIncrementTweak($id)
+        {
+            $range = 4; // 根據ClearDB設定
+            return $id * 10 - 10 + $range;
+
+            // return $id; // 本機設定
+        }
+        
         $this->call(CountiesTableSeeder::class);
         $this->call(LocationsTableSeeder::class);
         $this->call(CollectionsTableSeeder::class);
