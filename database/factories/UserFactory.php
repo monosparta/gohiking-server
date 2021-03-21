@@ -24,15 +24,7 @@ class UserFactory extends Factory
     {
         // 將產生密碼的變數移到上面，並改從後端顯示明碼
         $originalPassword = $this->faker->swiftBicNumber;
-        error_log($originalPassword);
-
-        function autoIncrementTweak($id)
-        {
-            $range = 4; // 根據ClearDB設定
-            return $id * 10 - 10 + $range;
-
-            // return $id; // 本機設定
-        }
+        error_log($originalPassword);        
 
         return [
             'name' => $this->faker->name,
