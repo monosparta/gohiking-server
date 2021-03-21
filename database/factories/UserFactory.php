@@ -26,6 +26,14 @@ class UserFactory extends Factory
         $originalPassword = $this->faker->swiftBicNumber;
         error_log($originalPassword);
 
+        function autoIncrementTweak($id)
+        {
+            $range = 4; // 根據ClearDB設定
+            return $id * 10 - 10 + $range;
+
+            // return $id; // 本機設定
+        }
+
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->email,
@@ -34,7 +42,7 @@ class UserFactory extends Factory
             'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100),
             'phone_number' =>  $this->faker->phoneNumber,
             'birth' =>  $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'county_id' => $this->faker->numberBetween(1, 10)
+            'county_id' => autoIncrementTweak($this->faker->numberBetween(1, 10))
         ];
     }
 }
