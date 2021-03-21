@@ -6,6 +6,17 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/* 雖然能讀取DatabaSeeder的函式，但不能直接使用(表示函式未定義的錯誤)，
+            故先另外命名後重複定義 */
+
+function factoryAutoIncrementTweak($id)
+{
+    $range = 4; // 根據ClearDB設定
+    return $id * 10 - 10 + $range;
+
+    // return $id; // 本機設定
+}
+
 class UserFactory extends Factory
 {
     /**
@@ -20,21 +31,12 @@ class UserFactory extends Factory
      *
      * @return array
      */
+
     public function definition()
     {
         // 將產生密碼的變數移到上面，並改從後端顯示明碼
         $originalPassword = $this->faker->swiftBicNumber;
         error_log($originalPassword);
-
-        /* 雖然能讀取DatabaSeeder的函式，但不能直接使用(表示函式未定義的錯誤)，
-            故先另外命名後重複定義 */
-        function factoryAutoIncrementTweak($id)
-        {
-            $range = 4; // 根據ClearDB設定
-            return $id * 10 - 10 + $range;
-
-            // return $id; // 本機設定
-        }
 
         return [
             'name' => $this->faker->name,
