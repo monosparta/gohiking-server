@@ -35,7 +35,8 @@ touch ./database/database.sqlite
 2. 回傳格式如下：
 ```
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)",
+    "userId": "8"
 }
 ```
 3. 前端若有設定自動攜帶上述token於headers，註冊後不必額外登入即可使用
@@ -83,7 +84,8 @@ touch ./database/database.sqlite
 2. 回傳格式如下：
 ```
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)",
+    "userId": "8"
 }
 ```
 3. 前端需設定攜帶上述token於headers，才能成立登入狀態存取需驗證的API
@@ -112,7 +114,8 @@ touch ./database/database.sqlite
 2. 回傳格式如下：
 ```
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)",
+    "userId": "8"
 }
 ```
 
