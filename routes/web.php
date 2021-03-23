@@ -17,9 +17,3 @@ use App\Http\Controllers\FacebookController;
 Route::get('/', function () {
     return response()->json(['status' => 'there is nothing here'], 404);
 });
-
-Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
-Route::get('auth/google/callback', [GoogleController::class, 'HandleGoogleCallback']);
-
-// Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook']);
-// Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
