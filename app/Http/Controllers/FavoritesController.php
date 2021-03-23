@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 
 class FavoritesController extends Controller
 {
@@ -13,7 +16,8 @@ class FavoritesController extends Controller
      */
     public function index()
     {
-        //
+        $trails = DB::table('favorites')->select('user_id', 'trail_id')->get()->groupBy('user_id');
+        return $trails;
     }
 
     /**
@@ -25,6 +29,19 @@ class FavoritesController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'user_id' => 'required',
+            'trail_id' => 'required',
+        ]);
+        $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
+        if (count($trails) == 0) {
+            $UserTrail = new Favorite;
+            $UserTrail->user_id = $request->user_id;
+            $UserTrail->trail_id = $request->trail_id;
+            $UserTrail->save();
+        } else {
+            return 'exist data';
+        }
     }
 
     /**
@@ -35,7 +52,9 @@ class FavoritesController extends Controller
      */
     public function show($id)
     {
-        //
+        //sql SELECT trail_id FROM `user_trails` WHERE user_id=$id
+        $trails = DB::table('favorites')->where('user_id', $id)->leftJoin('trails', 'user_trails.trail_id', '=', 'trails.id')->get();
+        return $trails;
     }
 
     /**
@@ -45,7 +64,7 @@ class FavoritesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
     }
@@ -56,8 +75,19 @@ class FavoritesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
+    {
+        //nothing
+    }
+    public function delete(Request $request)
     {
         //
+        $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
+        if (count($trails) == 0) {
+            return 'not exist';
+        } else {
+            $trail = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->pluck('id');
+            Favorite::destroy($trail);
+        }
     }
 }

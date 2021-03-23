@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsOfProfile extends Migration
+class AddCountryCodesForeignnToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class AddColumnsOfProfile extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table) {
-            $table->string('name')->nullable()->change();
-            $table->boolean('gender');
-            $table->string('phone_number')->unique()->nullable();
-            $table->date('birth')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('country_code_id');
+            $table->foreign('country_code_id')->references('id')->on('country_codes')->onDelete('cascade');
         });
     }
 
@@ -29,8 +27,7 @@ class AddColumnsOfProfile extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->change();
-            $table->dropColumn('gender', 'phone_number', 'birth');
+            $table->dropForeign(['country_code_id']);
         });
     }
 }

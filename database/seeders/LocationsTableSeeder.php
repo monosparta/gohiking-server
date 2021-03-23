@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Location;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 
 class LocationsTableSeeder extends Seeder
 {
@@ -15,45 +15,18 @@ class LocationsTableSeeder extends Seeder
      */
     public function run()
     {
-        $datas = [
-            [
-                'name' => '北投區',
-                'county_id' => autoIncrementTweak(1),
-            ],
-            [
-                'name' => '復興區',
-                'county_id' => autoIncrementTweak(3),
-            ],
-            [
-                'name' => '復興鄉',
-                'county_id' => autoIncrementTweak(3),
-            ],
-            [
-                'name' => '北屯區',
-                'county_id' => autoIncrementTweak(7),
-            ],
-            [
-                'name' => '南屯區',
-                'county_id' => autoIncrementTweak(7),
-            ],
-            [
-                'name' => '新烏日',
-                'county_id' => autoIncrementTweak(7),
-            ],
-            [
-                'name' => '沙鹿區',
-                'county_id' => autoIncrementTweak(7),
-            ],
-            [
-                'name' => '谷關區',
-                'county_id' => autoIncrementTweak(7),
-            ],
-        ];
-        foreach ($datas as $data) {
-            $location = new Location();
-            $location->name = $data['name'];
-            $location->county_id = $data['county_id'];
-            $location->save();
+        $json = FacadesStorage::disk('local')->get('taiwan_districts.json');
+        $json = json_decode($json, true);
+
+        foreach ($json as $key => $data) {
+            foreach ($data['districts'] as $value) {
+                $location = new Location();
+                $location->id = $value['zip'];
+                $location->name = $value['name'];
+                $location->county_id = autoIncrementTweak($key + 1);
+                $location->save();
+            }
+
         }
     }
 }

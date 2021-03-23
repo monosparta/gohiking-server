@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLocationsTable extends Migration
+class CreateCountryCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateLocationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('locations', function (Blueprint $table) {
-            $table->integer('id');
-            $table->string('name');
+        Schema::create('country_codes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('country_code');
+            $table->string('country_name');
+            $table->string('phone_code');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateLocationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('country_codes');
     }
 }

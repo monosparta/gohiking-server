@@ -15,7 +15,6 @@ class CollectionTrailTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('collection_trail')->delete();
         $datas = [
             [
                 'collection_id' => 2,
