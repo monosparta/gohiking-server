@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TagSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(CommentsImageSeeder::class);
-        // $this->call(FavoritesSeeder::class);
+        $this->call(FavoritesSeeder::class);
 
         function autoIncrementTweak($id)
         {

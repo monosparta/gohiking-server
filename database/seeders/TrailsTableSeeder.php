@@ -30,10 +30,10 @@ class TrailsTableSeeder extends Seeder
             $trail->altitude = $data['mileage'] * 1000;
             $trail->difficulty = rand(1, 5);
             $trail->evaluation = rand(1, 5);
-            $county_id = County::where('name', $data['city'])->get('id')[0]->id;
-            $trail->location_id = Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id;
-            $trail->article_id = rand(1, 10);
-            $trail->classification_id = rand(1, 10);
+            $county_id = autoIncrementTweak(County::where('name', $data['city'])->get('id')[0]->id);
+            $trail->location_id = autoIncrementTweak(Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id);
+            $trail->article_id = autoIncrementTweak(rand(1, 10));
+            $trail->classification_id = autoIncrementTweak(rand(1, 10));
             $trail->save();
         }
     }
