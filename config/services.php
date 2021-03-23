@@ -31,15 +31,15 @@ return [
     ],
     // id和serect應該用.env處理！！！
     'facebook' => [
-        'client_id' => '1398297947184863',
-        'client_secret' => '035fb8f995284316ecba65faa5ae7025',
-        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('APP_URL') . '/auth/facebook/callback',
     ],
-    // id和serect應該用.env處理！！！
+    
     'google' => [
-        'client_id' => '860071321822-g7pji1pajug2f78a3pmpq3gj3b1drfhe.apps.googleusercontent.com',
-        'client_secret' => 'nSs1Y0EwFFa9X_RchmoZHwhR',
-        'redirect' => 'http://localhost:8000/auth/google/callback',
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('APP_URL').'/auth/google/callback',
     ],
 
 ];
