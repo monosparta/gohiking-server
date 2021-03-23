@@ -35,12 +35,17 @@ class FavoritesController extends Controller
         ]);
         $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
         if (count($trails) == 0) {
+            //如果沒有存在就新增
             $UserTrail = new Favorite;
             $UserTrail->user_id = $request->user_id;
             $UserTrail->trail_id = $request->trail_id;
             $UserTrail->save();
+            return 'add favorite';
         } else {
-            return 'exist data';
+            //如果重複就刪掉
+            $trail = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->pluck('id');
+            Favorite::destroy($trail);
+            return 'delete favorite';
         }
     }
 
@@ -79,15 +84,16 @@ class FavoritesController extends Controller
     {
         //nothing
     }
-    public function delete(Request $request)
-    {
-        //
-        $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
-        if (count($trails) == 0) {
-            return 'not exist';
-        } else {
-            $trail = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->pluck('id');
-            Favorite::destroy($trail);
-        }
-    }
+    //移除功能
+    // public function delete(Request $request)
+    // {
+    //     //
+    //     $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
+    //     if (count($trails) == 0) {
+    //         return 'not exist';
+    //     } else {
+    //         $trail = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->pluck('id');
+    //         Favorite::destroy($trail);
+    //     }
+    // }
 }
