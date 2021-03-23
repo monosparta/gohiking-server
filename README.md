@@ -94,6 +94,28 @@ touch ./database/database.sqlite
 }
 ```
 
+### 第三方登入
+0. 目前僅支援Facebook、Google、Apple，需由前端向社群平台驗證後取得帳戶資料
+1. 發送POST /api/auth/social/callback，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "name": "姓名",
+  "email": "電子郵件地址",
+  "facebook_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
+  "google_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
+  "apple_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
+  "avatar": "大頭貼",
+  "token": "(用於產生密碼雜湊)"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+}
+```
+
 ### 登入測試
 1. 以發送GET /api/index為例，驗證成功會收到：
 ```
