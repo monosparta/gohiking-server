@@ -23,9 +23,10 @@ class LocationsTableSeeder extends Seeder
                 $location = new Location();
                 $location->id = $value['zip'];
                 $location->name = $value['name'];
-                $location->county_id = $key + 1;
+                $location->county_id = autoIncrementTweak($key + 1);
                 $location->save();
             }
+
         }
     }
 }
