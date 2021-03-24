@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
@@ -36,9 +37,21 @@ class CollectionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
         $result=Collection::with('trails')->find($id);
+        $userTrail=Favorite::select('trail_id')->where('user_id','=',$request->uuid)->get();
+        for($i=0;$i<count($result->trails);$i++)
+        {
+            $result->trails[$i]["favorite"]=false;
+            for($j=0;$j<count($userTrail);$j++)
+            {
+                if($result->trails[$i]->id===$userTrail[$j]->trail_id)
+                {
+                    $result->trails[$i]["favorite"]=true;
+                }
+            }
+        }
         return $result;
     }
 

@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ClassificationsSeeder::class);
         $this->call(TrailsTableSeeder::class);
         $this->call(UsersSeeder::class);
-        $this->call(FavoritesSeeder::class);
-      
+        // $this->call(FavoritesSeeder::class);
+
         function autoIncrementTweak($id)
         {
             $range = 4; // 根據ClearDB設定
@@ -32,6 +32,5 @@ class DatabaseSeeder extends Seeder
 
             // return $id; // 本機設定
         }
-        
     }
 }

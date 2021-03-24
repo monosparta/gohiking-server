@@ -23,16 +23,24 @@ class TrailsTableSeeder extends Seeder
         foreach ($json as $data) {
             $trail = new Trail();
             $trail->title = $data['title'];
+            $trail->latitude = $this->randomFloat(10, 1000);
+            $trail->longitude =  $this->randomFloat(10, 1000);
             $trail->distance = $data['mileage'];
             $trail->coverImage = $data['imgUrl'];
-            $trail->altitude = $data['mileage'];
-            $trail->difficulty = rand(1, 10);
-            $trail->evaluation = rand(1, 10);
-            $trail->county_id = autoIncrementTweak(County::where('name', $data['city'])->get('id')[0]->id);
-            $trail->location_id = autoIncrementTweak(Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id);
-            $trail->article_id = autoIncrementTweak(rand(1, 10));
-            $trail->classification_id = autoIncrementTweak(rand(1, 10));
+            $trail->altitude = $data['mileage'] * 1000;
+            $trail->difficulty = rand(1, 5);
+            $trail->evaluation = rand(1, 5);
+            $county_id = County::where('name', $data['city'])->get('id')[0]->id;
+            $trail->location_id = Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id;
+            $trail->article_id = rand(1, 10);
+            $trail->classification_id = rand(1, 10);
             $trail->save();
         }
+    }
+
+    public function randomFloat($min = 0, $max = 1)
+    {
+        $num =  $min + mt_rand() / mt_getrandmax() * ($max - $min);
+        return sprintf("%.5f", $num);
     }
 }
