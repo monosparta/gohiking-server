@@ -51,4 +51,4 @@ Route::resource('/home', HomeController::class);
 Route::resource('/article', ArticleController::class);
 Route::resource('/classification', ClassificationController::class);
 Route::resource('/favorite', FavoritesController::class);
-Route::post('/favorite/delete', [FavoriteController::class, 'delete']);
+Route::get('/favorites', [FavoritesController::class, 'Inquire']);
