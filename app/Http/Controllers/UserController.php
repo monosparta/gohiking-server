@@ -123,7 +123,7 @@ class UserController extends Controller
                 'gender' => 'bail|required|in:0,1',
                 'phone_number' => 'bail|required',
                 'birth' => 'bail|required|date|before:' . date("Y/m/d"),
-                'image' => 'bail|required',
+                'image' => 'bail|required|max:1024',
                 'county' => 'bail|required|max:3|min:3'
             ];
     }
@@ -134,14 +134,15 @@ class UserController extends Controller
             [
                 'name.required' => '名字必填',
                 'name.max' => '名字最多:max個字',
-                'gender' => '性別必填',
+                'gender.required' => '性別必填',
                 'gender.in' => '性別只能為男或女',
                 'phone_number' => '手機必填',
-                'birth' => '生日必填',
+                'birth.required' => '生日必填',
                 'birth.date' => '生日格式錯誤',
                 'birth.before' => '生日時間不能大於:date',
-                'image' => '圖片必填',
-                'county' => '居住地必填',
+                'image.required' => '圖片必填',
+                'image.max' => '圖片不能超過:maxKB',
+                'county.required' => '居住地必填',
                 'county.max' => '居住地最多:max個字',
                 'county.min' => '居住地最少:min個字',
             ];
