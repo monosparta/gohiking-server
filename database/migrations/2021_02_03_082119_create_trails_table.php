@@ -18,6 +18,7 @@ class CreateTrailsTable extends Migration
             $table->string('title');
             $table->string('latitude');
             $table->string('longitude');
+            $table->integer('location_id');
             $table->integer('distance');
             $table->binary('coverImage');;
             $table->integer('difficulty');

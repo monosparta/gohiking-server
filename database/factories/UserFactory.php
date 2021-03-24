@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/* 雖然能讀取DatabaSeeder的函式，但不能直接使用(表示函式未定義的錯誤)，
+/* 雖然能讀取DatabaseSeeder的函式，但不能直接使用(表示函式未定義的錯誤)，
             故先另外命名後重複定義 */
 
 function factoryAutoIncrementTweak($id)
