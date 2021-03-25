@@ -30,6 +30,7 @@ class User extends Authenticatable
         'password',
         'google_id',
         'facebook_id',
+        'apple_id',
         'gender',
         'phone_number',
         'phone_region',
