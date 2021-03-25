@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classification;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 
 class ClassificationController extends Controller
@@ -44,9 +45,21 @@ class ClassificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
         $classifications = Classification::with('trails', 'trails.location', 'trails.location.county')->find($id);
+        $userTrail=Favorite::select('trail_id')->where('user_id','=',$request->uuid)->get();
+        for($i=0;$i<count($classifications->trails);$i++)
+        {
+            $classifications->trails[$i]["favorite"]=false;
+            for($j=0;$j<count($userTrail);$j++)
+            {
+                if($classifications->trails[$i]->id===$userTrail[$j]->trail_id)
+                {
+                    $classifications->trails[$i]["favorite"]=true;
+                }
+            }
+        }
         return $classifications;
     }
 
