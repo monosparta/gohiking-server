@@ -11,4 +11,8 @@ class Tag extends Model
     protected $table = 'tags';
     protected $primaryKey = 'id';
     protected $fillable = ['tagName'];
+
+    public function commentsImages(){
+        return $this->hasMany(CommentsImage::class);
+    }
 }

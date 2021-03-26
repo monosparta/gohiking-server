@@ -11,4 +11,16 @@ class Comment extends Model
     protected $table = 'comments';
     protected $primaryKey = 'id';
     protected $fillable = ['user_id','trail_id','date','star','difficulty','beauty','duration','content'];
+
+    public function trail(){
+        return $this->belongsTo(Trail::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function commentsImages(){
+        return $this->hasMany(CommentsImage::class);
+    }
 }
