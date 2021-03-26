@@ -20,6 +20,7 @@ class TagSeeder extends Seeder
         foreach($json as $data){
             $tag=new Tag();
             $tag->tagName=$data['tagName'];
+            $tag->save();
         }
     }
 }

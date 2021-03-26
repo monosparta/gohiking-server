@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClassificationsSeeder::class);
         $this->call(TrailsTableSeeder::class);
         $this->call(UsersSeeder::class);
+        $this->call(TagSeeder::class);
         // $this->call(FavoritesSeeder::class);
 
         function autoIncrementTweak($id)
