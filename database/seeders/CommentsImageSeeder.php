@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CommentsImage;
 use Illuminate\Database\Seeder;
 
 class CommentsImageSeeder extends Seeder
@@ -13,6 +14,6 @@ class CommentsImageSeeder extends Seeder
      */
     public function run()
     {
-        //
+        CommentsImage::factory()->count(10)->create();
     }
 }

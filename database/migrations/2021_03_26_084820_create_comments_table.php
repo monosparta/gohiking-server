@@ -21,7 +21,7 @@ class CreateCommentsTable extends Migration
             $table->integer('star');
             $table->integer('difficulty');
             $table->integer('beauty');
-            $table->time('duration');
+            $table->integer('duration');
             $table->mediumText('content');
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ class CreateCommentsImagesTable extends Migration
     public function up()
     {
         Schema::create('comments_images', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('comment_id');
             $table->integer('user_id');
             $table->mediumText('s3_url');

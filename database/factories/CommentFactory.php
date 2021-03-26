@@ -22,7 +22,24 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            //
-        ];
+            'user_id'=>rand(1,10),
+            'trail_id'=>rand(1,6),
+            'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'star'=>rand(1,5),
+            'difficulty'=>rand(1,5),
+            'beauty'=>rand(1,5),
+            'duration'=>rand(10,150),//minute
+            'content'=> $this->random()
+        ];   
+    }
+
+    private function random($str = '')
+    {
+        $count = 0;
+        while ($count < rand(1, 5)) {
+            $str .= $this->faker->catchPhrase;
+            $count++;
+        }
+        return $str;
     }
 }

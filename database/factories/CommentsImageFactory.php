@@ -22,7 +22,10 @@ class CommentsImageFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'comment_id'=>rand(1,10),
+            'user_id'=>rand(1,10),
+            's3_url'=>'https://www.google.com/',
+            'tag_id'=>rand(1,12)
         ];
     }
 }
