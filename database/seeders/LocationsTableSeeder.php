@@ -21,12 +21,11 @@ class LocationsTableSeeder extends Seeder
         foreach ($json as $key => $data) {
             foreach ($data['districts'] as $value) {
                 $location = new Location();
-                $location->id = $value['zip'];
+                $location->zip = $value['zip'];
                 $location->name = $value['name'];
-                $location->county_id = autoIncrementTweak($key + 1);
+                $location->county_id = $key + 1;
                 $location->save();
             }
-
         }
     }
 }
