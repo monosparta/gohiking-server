@@ -15,6 +15,10 @@ class CreateCommentsImagesTable extends Migration
     {
         Schema::create('comments_images', function (Blueprint $table) {
             $table->id();
+            $table->integer('comment_id');
+            $table->integer('user_id');
+            $table->mediumText('s3_url');
+            $table->integer('tag_id');
             $table->timestamps();
         });
     }
