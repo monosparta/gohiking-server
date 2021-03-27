@@ -14,6 +14,6 @@ class CommentsImageSeeder extends Seeder
      */
     public function run()
     {
-        CommentsImage::factory()->count(10)->create();
+        CommentsImage::factory()->count(30)->create();
     }
 }

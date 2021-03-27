@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -24,7 +26,20 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $totalPeople=count(Comment::select('star') ->where('trail_id','=',$request->trail_id)->get());
+        $avgStar=Comment::select('star') ->where('trail_id','=',$request->trail_id)->avg('star');
+        $stars=Comment::select('star',DB::raw('count(*) as count'))
+        ->where('trail_id','=',$request->trail_id)
+        ->groupBy('star')
+        ->get();
+        $comments=Comment::with('commentsImages')->where('trail_id','=',$request->trail_id)->get();
+        // for($i=0;$i<count($comments))
+        return response()->json(array(
+            'totalPeople'=>$totalPeople,
+            'avgStar'=>$avgStar,
+            'stars'=>$stars,
+            'comments'=>$comments,
+        ));
     }
 
     /**
