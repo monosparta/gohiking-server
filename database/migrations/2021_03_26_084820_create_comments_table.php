@@ -23,6 +23,8 @@ class CreateCommentsTable extends Migration
             $table->integer('beauty');
             $table->integer('duration');
             $table->mediumText('content');
+            $table->integer('likes');
+            $table->integer('dislikes');
             $table->timestamps();
         });
     }
