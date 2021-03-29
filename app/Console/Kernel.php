@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+// use App\Models\User;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +25,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->call(function () {
+        //     $result = User::whereRaw('created_at >= now() - interval 1 hour')->update([
+        //         'verification_code_0' => NULL,
+        //         'verification_code_1' => NULL,
+        //         'verification_code_2' => NULL,
+        //         'verification_code_3' => NULL,
+        //     ]);
+        //     error_log('result: '.$result);
+        // })->everyMinute();
     }
 
     /**
