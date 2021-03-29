@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Comment;
 use App\Models\CommentsImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
@@ -27,16 +28,15 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'user_id'=>'required',
-            'trail_id'=>'required',
-            'date'=>'required',
-            'star'=>'required',
-            'difficulty'=>'required',
-            'beauty'=>'required',
-            'duration'=>'required',
-            'content'=>'required',
-        ]);
+        $validator = Validator::make($request->all(), $this->rule(), $this->errorMassage());
+        if ($validator->fails()) {
+            $error = "";
+            $errors = $validator->errors();
+            foreach ($errors->all() as $message)
+                $error .= $message . "\n";
+            return ['status' => 0, 'massage' => $error];
+        }
+
         $comments=new Comment();
         $comments->user_id=$request->user_id;
         $comments->trail_id=$request->trail_id;
@@ -113,5 +113,35 @@ class CommentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function rule()
+    {
+        return
+            [
+                'user_id'=>'bail|required',
+                'trail_id'=>'bail|required',
+                'date'=>'bail|required',
+                'star'=>'bail|required',
+                'difficulty'=>'bail|required',
+                'beauty'=>'bail|required',
+                'duration'=>'bail|required',
+                'content'=>'bail|required',
+            ];
+    }
+
+    private function errorMassage()
+    {
+        return
+            [
+                'user_id.required' => '使用者_id必填',
+                'trail_id.required' => '步道_id必填',
+                'date.required' => '日期必填',
+                'star.required' => '星級必填',
+                'difficulty.required' => '難易度必填',
+                'beauty.required' => '景色必填',
+                'duration.required' => '耗時必填',
+                'content.required' => '評論必填',
+            ];
     }
 }
