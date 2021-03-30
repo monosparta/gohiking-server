@@ -6,8 +6,12 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\CountryCode;
 use App\Models\County;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class UserController extends Controller
 {
@@ -41,6 +45,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('county')->find($id);
+        $user->image = $this->getFileUrl_s3($user->image);
         $countrycodes = CountryCode::all();
 
         return  ['users' => $user, 'countrycodes' => $countrycodes];
@@ -55,16 +60,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), $this->rule(), $this->errorMassage());
+        $validator = Validator::make($request->all(), $this->rule(), $this->errorMessage());
         if ($validator->fails()) {
             $error = "";
             $errors = $validator->errors();
             foreach ($errors->all() as $message)
                 $error .= $message . "\n";
-            return ['status' => 0, 'massage' => $error];
+            return ['status' => 0, 'message' => $error];
         }
         $isSuccess = $this->userUpdate($request, $id);
-        return $isSuccess ? ['status' => 200, 'massage' => "新增成功"] : ['status' => 0, 'massage' => "新增失敗，查無縣市"];
+        return $isSuccess ? ['status' => 200, 'message' => "新增成功"] : ['status' => 0, 'message' => "新增失敗，查無縣市"];
     }
 
     private function userUpdate($request, $id)
@@ -88,7 +93,13 @@ class UserController extends Controller
                     $user[$key] = $item;
                     break;
                 case 'image':
-                    $user[$key] = $item;
+                    if ($item) {
+                        if ($this->upload_s3($item)) {
+                            $user[$key] = $this->upload_s3($item);
+                        } else {
+                            return '上傳失敗';
+                        }
+                    }
                     break;
                 case 'county':
                     $checkCountyId = County::where('name', $item)->get('id');
@@ -102,7 +113,9 @@ class UserController extends Controller
                     break;
             }
         }
-        return $user->save();
+        $user->save();
+
+        return $user;
     }
     /**
      * Remove the specified resource from storage.
@@ -123,12 +136,11 @@ class UserController extends Controller
                 'gender' => 'bail|required|in:0,1',
                 'phone_number' => 'bail|required',
                 'birth' => 'bail|required|date|before:' . date("Y/m/d"),
-                'image' => 'bail|required',
                 'county' => 'bail|required|max:3|min:3'
             ];
     }
 
-    private function errorMassage()
+    private function errorMessage()
     {
         return
             [
@@ -140,10 +152,30 @@ class UserController extends Controller
                 'birth.required' => '生日必填',
                 'birth.date' => '生日格式錯誤',
                 'birth.before' => '生日時間不能大於:date',
-                'image.required' => '圖片必填',
                 'county.required' => '居住地必填',
                 'county.max' => '居住地最多:max個字',
                 'county.min' => '居住地最少:min個字',
             ];
+    }
+    private function upload_s3($uploadImage)
+    {
+        $date = new DateTime();
+        $timestamp =  $date->getTimestamp();
+        list($baseType, $image) = explode(';', $uploadImage);
+        list(, $image) = explode(',', $image);
+        $image = base64_decode($image);
+        $filePath = 'imgs/' . $timestamp . '.jpg';
+        return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
+    }
+    private function getFileUrl_s3($fileName)
+    {
+        $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
+        $command = $client->getCommand('GetObject', [
+            'Bucket' => 'monosparta-test',
+            'Key' => $fileName
+        ]);
+        $request = $client->createPresignedRequest($command, '+7 days');
+        $presignedUrl = (string)$request->getUri();
+        return $presignedUrl;
     }
 }
