@@ -82,6 +82,11 @@ class CommentController extends Controller
         ->where('trail_id','=',$id)
         ->groupBy('star')
         ->get();
+        $starsgrop[0][0]="one";
+        $starsgrop[1][0]="two";
+        $starsgrop[2][0]="three";
+        $starsgrop[3][0]="four";
+        $starsgrop[4][0]="five";
         $comments=Comment::with('commentsImages')->where('trail_id','=',$id)->get();
         // for($i=0;$i<count($comments))
         return response()->json(array(
