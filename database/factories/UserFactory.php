@@ -44,9 +44,10 @@ class UserFactory extends Factory
             'password' => bcrypt($originalPassword), // 僅儲存雜湊過的密碼，以符合資安邊準
             'gender' =>  $this->faker->boolean ? '1' : '0',
             'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100),
-            'phone_number' =>  $this->faker->phoneNumber,
+            'phone_number' =>  '09' . rand(00000001, 99999999),
             'birth' =>  $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'county_id' => factoryAutoIncrementTweak($this->faker->numberBetween(1, 10))
+            'county_id' => $this->faker->numberBetween(1, 10),
+            'country_code_id' => rand(1, 10)
         ];
     }
 }

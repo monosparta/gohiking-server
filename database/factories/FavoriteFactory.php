@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Classification;
+use App\Models\Favorite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ClassificationFactory extends Factory
+class FavoriteFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Classification::class;
+    protected $model = Favorite::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,8 @@ class ClassificationFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->catchPhrase,
+            'user_id'=>rand(1,10),
+            'trail_id'=>rand(1,6)
         ];
     }
 }

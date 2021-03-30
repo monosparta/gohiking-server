@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Classification;
+use App\Models\CommentsImage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ClassificationFactory extends Factory
+class CommentsImageFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Classification::class;
+    protected $model = CommentsImage::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,10 @@ class ClassificationFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->catchPhrase,
+            'comment_id'=>rand(1,10),
+            'user_id'=>rand(1,10),
+            's3_url'=>'https://www.google.com/',
+            'tag_id'=>rand(1,12)
         ];
     }
 }

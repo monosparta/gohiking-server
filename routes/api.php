@@ -10,6 +10,8 @@ use App\Http\Controllers\SocialController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FavoritesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +53,6 @@ Route::resource('/user', UserController::class);
 Route::resource('/home', HomeController::class);
 Route::resource('/article', ArticleController::class);
 Route::resource('/classification', ClassificationController::class);
-Route::resource('/favorite', FavoriteController::class);
+Route::resource('/favorite', FavoritesController::class);
+Route::get('/favorites', [FavoritesController::class, 'Inquire']);
+Route::resource('/comment',CommentController::class);

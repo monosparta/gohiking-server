@@ -17,7 +17,7 @@ class CreateCollectionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('subTitle')->nullable();
-            $table->string('iconImage')->nullable();
+            $table->binary('iconImage')->nullable();
             $table->timestamps();
         });
     }

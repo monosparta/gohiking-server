@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\County;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 
-class CountiesTableSeeder extends Seeder
+class TagSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,13 +15,12 @@ class CountiesTableSeeder extends Seeder
      */
     public function run()
     {
-        $json = FacadesStorage::disk('local')->get('taiwan_districts.json');
+        $json = FacadesStorage::disk('local')->get('tags.json');
         $json = json_decode($json, true);
-
-        foreach ($json as $data) {
-            $county = new County();
-            $county->name = $data['name'];
-            $county->save();
+        foreach($json as $data){
+            $tag=new Tag();
+            $tag->tagName=$data['tagName'];
+            $tag->save();
         }
     }
 }

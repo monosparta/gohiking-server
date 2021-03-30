@@ -77,6 +77,16 @@ class User extends Authenticatable
 
     public function trails()
     {
-        return $this->belongsToMany(Trail::class, 'user_trails');
+        return $this->belongsToMany(Trail::class, 'favorites','user_id','trail_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function CommentsImages()
+    {
+        return $this->hasMany(CommentsImages::class);
     }
 }
