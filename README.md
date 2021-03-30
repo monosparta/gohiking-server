@@ -35,7 +35,8 @@ touch ./database/database.sqlite
 2. 回傳格式如下：
 ```
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)",
+    "userId": "8"
 }
 ```
 3. 前端若有設定自動攜帶上述token於headers，註冊後不必額外登入即可使用
@@ -83,7 +84,8 @@ touch ./database/database.sqlite
 2. 回傳格式如下：
 ```
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)",
+    "userId": "8"
 }
 ```
 3. 前端需設定攜帶上述token於headers，才能成立登入狀態存取需驗證的API
@@ -91,6 +93,29 @@ touch ./database/database.sqlite
 ```
 {
     "error": "wrong email or password!"
+}
+```
+
+### 第三方登入
+0. 目前僅支援Facebook、Google、Apple，需由前端向社群平台驗證後取得帳戶資料
+1. 發送POST /api/auth/social/callback，Body(x-www-form-urlencoded)需攜帶：
+
+```
+{
+  "name": "姓名",
+  "email": "電子郵件地址",
+  "facebook_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
+  "google_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
+  "apple_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
+  "avatar": "大頭貼",
+  "token": "(用於產生密碼雜湊)",
+    "userId": "8"
+}
+```
+2. 回傳格式如下：
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...(TLDR)"
 }
 ```
 
@@ -128,7 +153,9 @@ touch ./database/database.sqlite
 1. 發送POST /api/password/confirm，Body(x-www-form-urlencoded)需攜帶：
 
 ```
+// 此時驗證碼充當密碼驗證
 {
+  "email": "(使用者輸入的email)",
   "verificationCode0": "(第0個驗證碼(以陣列方式計算)",
   "verificationCode1": "(第1個驗證碼(以陣列方式計算)",
   "verificationCode2": "(第2個驗證碼(以陣列方式計算)",

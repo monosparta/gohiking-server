@@ -6,6 +6,7 @@ use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\TrailController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PassportAuthController;
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ClassificationController;
@@ -35,6 +36,8 @@ Route::post('register', [PassportAuthController::class, 'register']);
 Route::middleware('auth:api')->post('profile', [PassportAuthController::class, 'createProfile']);
 
 Route::post('login', [PassportAuthController::class, 'login']);
+
+Route::post('auth/social/callback', [SocialController::class, 'handleSocialCallback']);
 
 Route::post('/password/forget', [PassportAuthController::class, 'forgetPassword']);
 Route::post('/password/confirm', [PassportAuthController::class, 'confirmVerificationCodes']);
