@@ -82,17 +82,40 @@ class CommentController extends Controller
         ->where('trail_id','=',$id)
         ->groupBy('star')
         ->get();
-        $starsgrop[0][0]="one";
-        $starsgrop[1][0]="two";
-        $starsgrop[2][0]="three";
-        $starsgrop[3][0]="four";
-        $starsgrop[4][0]="five";
-        $comments=Comment::with('commentsImages')->where('trail_id','=',$id)->get();
+        $starsgrop=[
+            "one"=>"0",
+            "two"=>"0",
+            "three"=>"0",
+            "four"=>"0",
+            "five"=>"0"
+        ];
+        foreach($stars as $key=>$value)
+        {
+            switch ($value->star){
+                case 1:
+                    $starsgrop['one']=$value->count;
+                    break;
+                case 2:
+                    $starsgrop['two']=$value->count;
+                    break;
+                case 3:
+                    $starsgrop['three']=$value->count;
+                    break;
+                case 4:
+                    $starsgrop['four']=$value->count;
+                    break;
+                case 5:
+                    $starsgrop['five']=$value->count;
+                    break;
+            }
+        }
+
+        $comments=Comment::with('commentsImages','user:id,name')->where('trail_id','=',$id)->get();
         // for($i=0;$i<count($comments))
         return response()->json(array(
             'totalPeople'=>$totalPeople,
             'avgStar'=>$avgStar,
-            'stars'=>$stars,
+            'stars'=>$starsgrop,
             'comments'=>$comments,
         ));
     }
