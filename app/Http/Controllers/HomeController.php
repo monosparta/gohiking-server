@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Banner;
 use App\Models\Classification;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -16,9 +17,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $banners = Banner::all();
+        $classifications = Classification::all();
         $articles = Article::all();
-        $classification = Classification::all();
-        return  ['articles' => $articles, 'classifications' => $classification];
+        return  ['banners' => $banners, 'classifications' => $classifications, 'articles' => $articles];
     }
 
     /**

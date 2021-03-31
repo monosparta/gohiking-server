@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\CountryCode;
+use App\Models\County;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class UserController extends Controller
 {
@@ -37,7 +45,10 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('county')->find($id);
-        return  $user;
+        $user->image = $this->getFileUrl_s3($user->image);
+        $countrycodes = CountryCode::all();
+
+        return  ['users' => $user, 'countrycodes' => $countrycodes];
     }
 
     /**
@@ -49,27 +60,53 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request = $request->all();
+        $validator = Validator::make($request->all(), $this->rule(), $this->errorMessage());
+        if ($validator->fails()) {
+            $error = "";
+            $errors = $validator->errors();
+            foreach ($errors->all() as $message)
+                $error .= $message . "\n";
+            return ['status' => 0, 'message' => $error];
+        }
+        $isSuccess = $this->userUpdate($request, $id);
+        return $isSuccess ? ['status' => 200, 'message' => "新增成功"] : ['status' => 0, 'message' => "新增失敗，查無縣市"];
+    }
+
+    private function userUpdate($request, $id)
+    {
         $user = User::find($id);
-        foreach ($request as $key => $item) {
+        foreach ($request->all() as $key => $item) {
             switch ($key) {
                 case 'name':
-                    $user->name = $item;
+                    $user[$key] = $item;
                     break;
                 case 'gender':
-                    $user->gender = $item;
+                    $user[$key] = $item;
+                    break;
+                case 'country_code_id':
+                    $user[$key] = $item;
                     break;
                 case 'phone_number':
-                    $user->phone_number = $item;
+                    $user[$key] = $item;
                     break;
                 case 'birth':
-                    $user->birth = $item;
+                    $user[$key] = $item;
                     break;
                 case 'image':
-                    $user->image = $item;
+                    if ($item) {
+                        if ($this->upload_s3($item)) {
+                            $user[$key] = $this->upload_s3($item);
+                        } else {
+                            return '上傳失敗';
+                        }
+                    }
                     break;
-                case 'county_id':
-                    $user->county_id = $item;
+                case 'county':
+                    $checkCountyId = County::where('name', $item)->get('id');
+                    if (count($checkCountyId))
+                        $user->county_id = $checkCountyId[0]->id;
+                    else
+                        return $user = 0;
                     break;
                 default:
                     # code...
@@ -77,10 +114,9 @@ class UserController extends Controller
             }
         }
         $user->save();
-        $user = User::with('county')->find($id);
+
         return $user;
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -90,5 +126,59 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function rule()
+    {
+        return
+            [
+                'name' => 'bail|required|max:10',
+                'gender' => 'bail|required|in:0,1',
+                'phone_number' => 'bail|required',
+                'birth' => 'bail|required|date|before:' . date("Y/m/d"),
+                'image' => 'bail|required|max:1024',
+                'county' => 'bail|required|max:3|min:3'
+            ];
+    }
+
+    private function errorMessage()
+    {
+        return
+            [
+                'name.required' => '名字必填',
+                'name.max' => '名字最多:max個字',
+                'gender.required' => '性別必填',
+                'gender.in' => '性別只能為男或女',
+                'phone_number' => '手機必填',
+                'birth.required' => '生日必填',
+                'birth.date' => '生日格式錯誤',
+                'birth.before' => '生日時間不能大於:date',
+                'image.required' => '圖片必填',
+                'image.max' => '圖片不能超過:maxKB',
+                'county.required' => '居住地必填',
+                'county.max' => '居住地最多:max個字',
+                'county.min' => '居住地最少:min個字',
+            ];
+    }
+    private function upload_s3($uploadImage)
+    {
+        $date = new DateTime();
+        $timestamp =  $date->getTimestamp();
+        list($baseType, $image) = explode(';', $uploadImage);
+        list(, $image) = explode(',', $image);
+        $image = base64_decode($image);
+        $filePath = 'imgs/' . $timestamp . '.jpg';
+        return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
+    }
+    private function getFileUrl_s3($fileName)
+    {
+        $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
+        $command = $client->getCommand('GetObject', [
+            'Bucket' => 'monosparta-test',
+            'Key' => $fileName
+        ]);
+        $request = $client->createPresignedRequest($command, '+7 days');
+        $presignedUrl = (string)$request->getUri();
+        return $presignedUrl;
     }
 }

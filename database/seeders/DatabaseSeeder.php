@@ -4,6 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+function autoIncrementTweak($id)
+{
+    $range = 4; // 根據ClearDB設定
+    return $id * 10 - 10 + $range;
+
+    // return $id; // 本機設定
+}
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,14 +21,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        function autoIncrementTweak($id)
-        {
-            $range = 4; // 根據ClearDB設定
-            return $id * 10 - 10 + $range;
-
-            // return $id; // 本機設定
-        }
-        
+        $this->call(BannerSeeder::class);
+        $this->call(CountryCodeSeeder::class);
         $this->call(CountiesTableSeeder::class);
         $this->call(LocationsTableSeeder::class);
         $this->call(CollectionsTableSeeder::class);
@@ -29,5 +31,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ClassificationsSeeder::class);
         $this->call(TrailsTableSeeder::class);
         $this->call(UsersSeeder::class);
+        $this->call(TagSeeder::class);
+        $this->call(CommentSeeder::class);
+        $this->call(CommentsImageSeeder::class);
+        $this->call(FavoritesSeeder::class);
     }
 }

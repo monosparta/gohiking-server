@@ -6,15 +6,14 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/* 雖然能讀取DatabaSeeder的函式，但不能直接使用(表示函式未定義的錯誤)，
+/* 雖然能讀取DatabaseSeeder的函式，但不能直接使用(表示函式未定義的錯誤)，
             故先另外命名後重複定義 */
-
 function factoryAutoIncrementTweak($id)
 {
     $range = 4; // 根據ClearDB設定
     return $id * 10 - 10 + $range;
 
-    // return $id; // 本機設定
+//     return $id; // 本機設定
 }
 
 class UserFactory extends Factory
@@ -44,9 +43,12 @@ class UserFactory extends Factory
             'password' => bcrypt($originalPassword), // 僅儲存雜湊過的密碼，以符合資安邊準
             'gender' =>  $this->faker->boolean ? '1' : '0',
             'image' => 'https://picsum.photos/500/400?random=' . rand(1, 100),
-            'phone_number' =>  $this->faker->phoneNumber,
+            'phone_number' =>  '09' . rand(00000001, 99999999),
             'birth' =>  $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'county_id' => factoryAutoIncrementTweak($this->faker->numberBetween(1, 10))
+            'county_id' => factoryAutoIncrementTweak($this->faker->numberBetween(1, 10)), // heroku部署用
+            'country_code_id' => factoryAutoIncrementTweak(rand(1, 10)) // heroku部署用
+            // 'county_id' => $this->faker->numberBetween(1, 10),
+            // 'country_code_id' => rand(1, 10)
         ];
     }
 }
