@@ -41,9 +41,9 @@ class PassportAuthController extends Controller
             'name' => 'required',
             'gender' => 'required',
             'phone_number' => 'required',
-            'phone_region' => 'required',
+            'county_id' => 'required',
             'birth' => 'required',
-            'live' => 'required',
+            'country_code_id' => 'required',
         ]);
 
         $findUser = User::where('id', $request->user()->id)->first();
@@ -53,9 +53,9 @@ class PassportAuthController extends Controller
                 'name' => $request->name,
                 'gender' => $request->gender,
                 'phone_number' => $request->phone_number,
-                'phone_region' => $request->phone_region,
+                'county_id' => $request->county_id,
                 'birth' => $request->birth,
-                'live' => $request->live,
+                'country_code_id' => $request->country_code_id,
             ]);
             return response()->json(['status' => 'your profile is created!'], 200);
         } else {
