@@ -17,7 +17,7 @@ class CreateCommentsImagesTable extends Migration
             $table->increments('id');
             $table->integer('comment_id');
             $table->integer('user_id');
-            $table->mediumText('s3_url');
+            $table->mediumText('s3_filePath');
             $table->integer('tag_id');
             $table->timestamps();
         });

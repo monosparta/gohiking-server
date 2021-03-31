@@ -24,7 +24,7 @@ class CommentsImageFactory extends Factory
         return [
             'comment_id'=>rand(1,10),
             'user_id'=>rand(1,10),
-            's3_url'=>'https://www.google.com/',
+            's3_filePath'=>'imgs/1616989897.jpg',
             'tag_id'=>rand(1,12)
         ];
     }

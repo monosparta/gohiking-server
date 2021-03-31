@@ -7,6 +7,8 @@ use App\Models\Comment;
 use App\Models\CommentsImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use DateTime;
+use Illuminate\Support\Facades\Storage;
 
 class CommentController extends Controller
 {
@@ -28,6 +30,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+        //驗證資料
         $validator = Validator::make($request->all(), $this->rule(), $this->errorMassage());
         if ($validator->fails()) {
             $error = "";
@@ -36,7 +39,7 @@ class CommentController extends Controller
                 $error .= $message . "\n";
             return ['status' => 0, 'massage' => $error];
         }
-
+        //新增評論
         $comments=new Comment();
         $comments->user_id=$request->user_id;
         $comments->trail_id=$request->trail_id;
@@ -51,15 +54,21 @@ class CommentController extends Controller
         $comments->save();//新增
         //取的最新一筆 該使用者新增的comment_id
         $last_comments_id=Comment::select('id')->where('user_id','=',$request->user_id)->latest('id')->first();
-        if(isset($request->s3_url)&&isset($request->tag_id)){
-            $s3_urls=explode(',',$request->s3_url);//多筆請用,分割
+        //評論圖片如果有上傳，才執行
+        if(isset($request->images)&&isset($request->tag_id)){
+            if($this->upload_s3($request->images)){
+                $s3_filePaths=$this->upload_s3($request->images);
+            }
+            else{
+                $s3_filePaths='';
+            }
             $tags=explode(',',$request->tag_id);//分割傳來圖片的tag數字
-            for($i=0;$i<count($s3_urls);$i++)//看有幾筆，就新增幾筆
+            for($i=0;$i<count($s3_filePaths);$i++)//看有幾筆，就新增幾筆
             {
                 $commentsImages=new CommentsImage();
                 $commentsImages->comment_id=$last_comments_id->id;
                 $commentsImages->user_id=$request->user_id;
-                $commentsImages->s3_url=$s3_urls[$i];
+                $commentsImages->s3_filePath=$s3_filePaths[$i];//放置S3URL
                 $commentsImages->tag_id=$tags[$i];
                 $commentsImages->save();
             }
@@ -82,41 +91,52 @@ class CommentController extends Controller
         ->where('trail_id','=',$id)
         ->groupBy('star')
         ->get();
-        $starsgrop=[
+        //starts 取的資料是統計資料庫的 count數字1~5 不方便前端存取
+        //startsgroup 回傳 前端方便存取的格式
+        $starsgroup=[
             "one"=>"0",
             "two"=>"0",
             "three"=>"0",
             "four"=>"0",
             "five"=>"0"
         ];
+        //判斷 $stars的星級是哪一個，再塞入 starsgroup $stars人數
         foreach($stars as $key=>$value)
         {
             switch ($value->star){
                 case 1:
-                    $starsgrop['one']=$value->count;
+                    $starsgroup['one']=$value->count;
                     break;
                 case 2:
-                    $starsgrop['two']=$value->count;
+                    $starsgroup['two']=$value->count;
                     break;
                 case 3:
-                    $starsgrop['three']=$value->count;
+                    $starsgroup['three']=$value->count;
                     break;
                 case 4:
-                    $starsgrop['four']=$value->count;
+                    $starsgroup['four']=$value->count;
                     break;
                 case 5:
-                    $starsgrop['five']=$value->count;
+                    $starsgroup['five']=$value->count;
                     break;
             }
         }
+        //取的目前的comment data
+        $comments=Comment::with('user:id,name','commentsImages:id,comment_id,s3_filePath,tag_id')->where('trail_id','=',$id)->get();
+        foreach($comments as $key=>$values)
+        {
+            foreach($comments[$key]['commentsImages'] as $value)
+            {
+                //取得圖片URL
+                $value['s3_url']=$this->getFileUrl_s3($value->s3_filePath);
+            }
+        }
 
-        $comments=Comment::with('commentsImages','user:id,name')->where('trail_id','=',$id)->get();
-        // for($i=0;$i<count($comments))
         return response()->json(array(
-            'totalPeople'=>$totalPeople,
-            'avgStar'=>$avgStar,
-            'stars'=>$starsgrop,
-            'comments'=>$comments,
+            'totalPeople'=>$totalPeople,//評論總人數
+            'avgStar'=>$avgStar,//平均星數
+            'stars'=>$starsgroup,//各星級人數
+            'comments'=>$comments,//評論內容
         ));
     }
 
@@ -171,5 +191,28 @@ class CommentController extends Controller
                 'duration.required' => '耗時必填',
                 'content.required' => '評論必填',
             ];
+    }
+
+    private function upload_s3($uploadImage)
+    {
+        $date = new DateTime();
+        $timestamp =  $date->getTimestamp();
+        list($baseType, $image) = explode(';', $uploadImage);
+        list(, $image) = explode(',', $image);
+        $image = base64_decode($image);
+        $filePath = 'imgs/' . $timestamp . '.jpg';
+        return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
+    }
+
+    private function getFileUrl_s3($fileName)
+    {
+        $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
+        $command = $client->getCommand('GetObject', [
+            'Bucket' => 'monosparta-test',
+            'Key' => $fileName
+        ]);
+        $request = $client->createPresignedRequest($command, '+7 days');
+        $presignedUrl = (string)$request->getUri();
+        return $presignedUrl;
     }
 }

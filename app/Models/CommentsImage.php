@@ -10,7 +10,8 @@ class CommentsImage extends Model
     use HasFactory;
     protected $table = 'comments_images';
     protected $primaryKey = 'id';
-    protected $fillable = ['comment_id','user_id','s3_url','tag_id'];
+    protected $fillable = ['comment_id','user_id','s3_filePath','tag_id'];
+    protected $hidden =['id','s3_filePath'];
 
     public function comment(){
         return $this->belongsTo(Comment::class);
