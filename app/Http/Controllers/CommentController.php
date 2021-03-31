@@ -31,51 +31,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //驗證資料
-        $validator = Validator::make($request->all(), $this->rule(), $this->errorMassage());
-        if ($validator->fails()) {
-            $error = "";
-            $errors = $validator->errors();
-            foreach ($errors->all() as $message)
-                $error .= $message . "\n";
-            return ['status' => 0, 'massage' => $error];
-        }
-        //新增評論
-        $comments=new Comment();
-        $comments->user_id=$request->user_id;
-        $comments->trail_id=$request->trail_id;
-        $comments->date=$request->date;
-        $comments->star=$request->star;
-        $comments->difficulty=$request->difficulty;
-        $comments->beauty=$request->beauty;
-        $comments->duration=$request->duration;
-        $comments->content=$request->content;
-        $comments->likes=0;
-        $comments->dislikes=0;
-        $comments->save();//新增
-        //取的最新一筆 該使用者新增的comment_id
-        $last_comments_id=Comment::select('id')->where('user_id','=',$request->user_id)->latest('id')->first();
-        //評論圖片如果有上傳，才執行
-        if(isset($request->images)&&isset($request->tag_id)){
-            if($this->upload_s3($request->images)){
-                $s3_filePaths=$this->upload_s3($request->images);
-            }
-            else{
-                $s3_filePaths='';
-            }
-            $tags=explode(',',$request->tag_id);//分割傳來圖片的tag數字
-            for($i=0;$i<count($s3_filePaths);$i++)//看有幾筆，就新增幾筆
-            {
-                $commentsImages=new CommentsImage();
-                $commentsImages->comment_id=$last_comments_id->id;
-                $commentsImages->user_id=$request->user_id;
-                $commentsImages->s3_filePath=$s3_filePaths[$i];//放置S3URL
-                $commentsImages->tag_id=$tags[$i];
-                $commentsImages->save();
-            }
-        }
-
-        return Comment::with('commentsImages.tag')->where('trail_id','=',$request->trail_id)->get();
+        
     }
 
     /**
@@ -157,7 +113,49 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //驗證資料
+        $validator = Validator::make($request->all(), $this->rule(), $this->errorMassage());
+        if ($validator->fails()) {
+            $error = "";
+            $errors = $validator->errors();
+            foreach ($errors->all() as $message)
+                $error .= $message . "\n";
+            return ['status' => 0, 'massage' => $error];
+        }
+        //新增評論
+        $comments=new Comment();
+        $comments->user_id=$request->user_id;
+        $comments->trail_id=$request->trail_id;
+        $comments->date=$request->date;
+        $comments->star=$request->star;
+        $comments->difficulty=$request->difficulty;
+        $comments->beauty=$request->beauty;
+        $comments->duration=$request->duration;
+        $comments->content=$request->content;
+        $comments->save();//新增
+        //取的最新一筆 該使用者新增的comment_id
+        $last_comments_id=Comment::select('id')->where('user_id','=',$request->user_id)->latest('id')->first();
+        //評論圖片如果有上傳，才執行
+        if(isset($request->images) && isset($request->tag_id)){
+            if($this->upload_s3($request->images)){
+                $s3_filePaths=$this->upload_s3($request->images);
+            }
+            else{
+                $s3_filePaths='';
+            }
+            $tags=explode(',',$request->tag_id);//分割傳來圖片的tag數字
+            for($i=0;$i<count($s3_filePaths);$i++)//看有幾筆，就新增幾筆
+            {
+                $commentsImages=new CommentsImage();
+                $commentsImages->comment_id=$last_comments_id->id;
+                $commentsImages->user_id=$request->user_id;
+                $commentsImages->s3_filePath=$s3_filePaths[$i];//放置S3URL
+                $commentsImages->tag_id=$tags[$i];
+                $commentsImages->save();
+            }
+        }
+
+        return Comment::with('commentsImages.tag')->where('trail_id','=',$request->trail_id)->get();
     }
 
     /**
@@ -177,7 +175,7 @@ class CommentController extends Controller
             [
                 'user_id'=>'bail|required',
                 'trail_id'=>'bail|required',
-                'date'=>'bail|required',
+                'date'=>'bail|required|date:' . date("Y-m-d"),
                 'star'=>'bail|required',
                 'difficulty'=>'bail|required',
                 'beauty'=>'bail|required',
@@ -209,7 +207,8 @@ class CommentController extends Controller
         list(, $image) = explode(',', $image);
         $image = base64_decode($image);
         $filePath = 'imgs/' . $timestamp . '.jpg';
-        return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
+        Storage::disk('s3')->put($filePath, $image);
+        return back()->withSuccess('Image uploaded successfully');
     }
 
     private function getFileUrl_s3($fileName)
