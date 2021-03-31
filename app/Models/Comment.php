@@ -23,4 +23,8 @@ class Comment extends Model
     public function commentsImages(){
         return $this->hasMany(CommentsImage::class);
     }
+
+    public function userLikeComment(){
+        return $this->hasMany(UserLikeComment::class);
+    }
 }

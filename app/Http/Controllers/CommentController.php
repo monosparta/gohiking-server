@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class CommentController extends Controller
 {
@@ -122,7 +123,14 @@ class CommentController extends Controller
             }
         }
         //取的目前的comment data
-        $comments=Comment::with('user:id,name','commentsImages:id,comment_id,s3_filePath,tag_id')->where('trail_id','=',$id)->get();
+        $comments=Comment::with('user:id,name','commentsImages:id,comment_id,s3_filePath,tag_id')
+        ->where('trail_id','=',$id)
+        ->withCount(['userLikeComment as like'=>function(Builder $likequery){
+            $likequery->where('status',1);//1 = like count 算出status等於1的有多少
+        },'userLikeComment as dislike'=>function(Builder $dislikequery){
+            $dislikequery->where('status',-1);//-1 = dislike count 算出status等於-1的有多少
+        }
+        ])->get();
         foreach($comments as $key=>$values)
         {
             foreach($comments[$key]['commentsImages'] as $value)
