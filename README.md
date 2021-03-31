@@ -8,9 +8,9 @@ npm i // 安裝node.js套件，內建畫面模板使用的
 composer i // 安裝php套件，後端用到的
 cp .env.example .env // 並在.env填入環境變數
 php artisan key:generate // 產生網站專屬密鑰(寫入.env環境變數)，確保加密資料安全性(跳過這步網站會無法運作)
-
+// 以下為更動資料格式(非重新安裝)後仍需操作的部分
 php artisan migrate:fresh --seed // 將資料庫初始化，且有seeder時會載入(重複執行會清空資料)
-php artisan passport:install // 建立產生安全Access Token 的加密金鑰，才能執行
+php artisan passport:install // 建立產生安全Access Token 的加密金鑰才能執行，非重新安裝時需要加上--force覆寫既有金鑰
 php artisan serve // 測試能否運作
 ```
 
@@ -53,10 +53,11 @@ touch ./database/database.sqlite
 ```
 {
   "name": "姓名",
-  "gender": "性別",
+  "gender": 性別(1為男性，0為女性，null未指定),
   "phone_number": "手機號碼",
-  "birth": "生日",
-  "live": "居住地"
+  "country_code_id": 電話國碼(國家/地區代碼)
+  "birth": "生日(西元年/月/日)",
+  "county_id": 居住地(縣市代碼)
 }
 ```
 2. 回傳格式如下：
