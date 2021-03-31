@@ -84,19 +84,7 @@ class FavoritesController extends Controller
     {
         //nothing
     }
-    // 移除功能
-    // public function delete(Request $request)
-    // {
-    //     //
-    //     $trails = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->get();
-    //     if (count($trails) == 0) {
-    //         return 'not exist';
-    //     } else {
-    //         $trail = DB::table('favorites')->where('user_id', '=', $request->user_id)->where('trail_id', '=', $request->trail_id)->pluck('id');
-    //         Favorite::destroy($trail);
-    //     }
-    // }
-
+    
     public function Inquire(Request $request)
     {
         $userTrail=Favorite::select('trail_id')->where('user_id','=',$request->uuid)->with('trail')->get();
