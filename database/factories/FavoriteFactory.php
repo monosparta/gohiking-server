@@ -22,8 +22,8 @@ class FavoriteFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>rand(1,10),
-            'trail_id'=>rand(1,6)
+            'user_id'=>factoryAutoIncrementTweak(rand(1,10)),
+            'trail_id'=>factoryAutoIncrementTweak(rand(1,6))
         ];
     }
 }
