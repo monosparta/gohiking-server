@@ -113,7 +113,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //驗證資料
+        // //驗證資料
         $validator = Validator::make($request->all(), $this->rule(), $this->errorMassage());
         if ($validator->fails()) {
             $error = "";
@@ -156,6 +156,7 @@ class CommentController extends Controller
         }
 
         return Comment::with('commentsImages.tag')->where('trail_id','=',$request->trail_id)->get();
+     Storage::disk('s3')->exists('1.jpg');
     }
 
     /**
@@ -207,8 +208,7 @@ class CommentController extends Controller
         list(, $image) = explode(',', $image);
         $image = base64_decode($image);
         $filePath = 'imgs/' . $timestamp . '.jpg';
-        Storage::disk('s3')->put($filePath, $image);
-        return back()->withSuccess('Image uploaded successfully');
+        return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
     }
 
     private function getFileUrl_s3($fileName)
