@@ -30,8 +30,6 @@ class CommentFactory extends Factory
             'beauty'=>rand(1,5),
             'duration'=>rand(10,150),//minute
             'content'=> $this->random(),
-            'likes'=>rand(20,30),
-            'dislikes'=>rand(3,6),
         ];   
     }
 
