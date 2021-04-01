@@ -59,11 +59,13 @@ class CommentController extends Controller
             $tags = explode(',', $request->tag_id); //分割傳來圖片的tag數字
             for ($i = 0; $i < count($tags); $i++) //看有幾筆，就新增幾筆
             {
-                $a = '';
-                foreach ($request->file('images') as  $value) {
-                    $a .= $value->getClientOriginalName();
+                $a =  $request->file('images');
+                $b = '';
+                foreach ($a as  $value) {
+                    $b .= $value->getClientOriginalName();
                 }
-                return $a;
+
+                return $b;
                 // $path = $this->upload_s3($request->images[$i]);
                 // $commentsImages = new CommentsImage();
                 // $commentsImages->comment_id = $last_comments_id->id;
