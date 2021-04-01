@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use App\Models\Comment;
 use App\Models\CommentsImage;
+use App\Models\UserLikeComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
@@ -55,7 +57,11 @@ class CommentController extends Controller
         //取的最新一筆 該使用者新增的comment_id
         $last_comments_id = Comment::select('id')->where('user_id', '=', $request->user_id)->latest('id')->first();
         //評論圖片如果有上傳，才執行
-        if (isset($request->images) && isset($request->tag_id)) {
+        return $request->file('images')->path();
+        if ($request->hasFile('images') && isset($request->tag_id)) {
+            $tmpPath = $request->images->path();
+            $path = $request->images->store('s3');
+            return $path;
             $tags = explode(',', $request->tag_id); //分割傳來圖片的tag數字
             for ($i = 0; $i < count($tags); $i++) //看有幾筆，就新增幾筆
             {
@@ -66,6 +72,7 @@ class CommentController extends Controller
                 }
 
                 return $b;
+
                 // $path = $this->upload_s3($request->images[$i]);
                 // $commentsImages = new CommentsImage();
                 // $commentsImages->comment_id = $last_comments_id->id;
@@ -76,7 +83,7 @@ class CommentController extends Controller
             }
         }
 
-        return Comment::with('commentsImages.tag')->where('trail_id', '=', $request->trail_id)->get();
+        //return Comment::with('commentsImages.tag')->where('trail_id', '=', $request->trail_id)->get();
     }
 
     /**
@@ -85,7 +92,7 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $totalPeople = count(Comment::select('star')->where('trail_id', '=', $id)->get());
         $avgStar = Comment::select('star')->where('trail_id', '=', $id)->avg('star');
@@ -132,14 +139,30 @@ class CommentController extends Controller
                     $dislikequery->where('status', -1); //-1 = dislike count 算出status等於-1的有多少
                 }
             ])->get();
+        $userlikestatus = UserLikeComment::select('comment_id', 'status')->where('user_id', '=', $request->uuid)->get();
+        //這是爛code，我盡力了
         foreach ($comments as $key => $values) {
-            foreach ($comments[$key]['commentsImages'] as $value) {
+            $comments[$key]['status'] = null;
+            foreach ($userlikestatus as $k => $v) {
+                if ($userlikestatus[$k]->comment_id == $comments[$key]->id) {
+                    switch ($userlikestatus[$k]->status) {
+                        case 1:
+                            $comments[$key]['status'] = 'like';
+                            break;
+                        case -1:
+                            $comments[$key]['status'] = 'dislike';
+                            break;
+                    }
+                }
+            }
+            foreach ($values['commentsImages'] as $value) {
                 //取得圖片URL
                 $value['s3_url'] = $this->getFileUrl_s3($value->s3_filePath);
             }
         }
 
         return response()->json(array(
+            'userLike' => $userlikestatus,
             'totalPeople' => $totalPeople, //評論總人數
             'avgStar' => $avgStar, //平均星數
             'stars' => $starsgroup, //各星級人數
