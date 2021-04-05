@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('county')->find($id);
+        $user = User::with('county')->select('id', 'name', 'email', 'image', 'gender', 'phone_number', 'birth', 'county_id', 'country_code_id')->find($id);
         $user->image = $this->getFileUrl_s3($user->image);
         $countrycodes = CountryCode::all();
 
@@ -94,8 +94,10 @@ class UserController extends Controller
                     break;
                 case 'image':
                     if ($item) {
-                        if ($this->upload_s3($item)) {
-                            $user[$key] = $this->upload_s3($item);
+                        $this->removeFile_s3($user[$key]);
+                        $checkUpload = $this->upload_s3($item);
+                        if ($checkUpload) {
+                            $user[$key] = $checkUpload;
                         } else {
                             return '上傳失敗';
                         }
@@ -167,15 +169,20 @@ class UserController extends Controller
         $filePath = 'imgs/' . $timestamp . '.jpg';
         return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
     }
-    private function getFileUrl_s3($fileName)
+    private function getFileUrl_s3($filePath)
     {
         $client = Storage::disk('s3')->getDriver()->getAdapter()->getClient();
         $command = $client->getCommand('GetObject', [
             'Bucket' => 'monosparta-test',
-            'Key' => $fileName
+            'Key' => $filePath
         ]);
         $request = $client->createPresignedRequest($command, '+7 days');
         $presignedUrl = (string)$request->getUri();
         return $presignedUrl;
+    }
+
+    private function removeFile_s3($filePath)
+    {
+        Storage::disk('s3')->delete($filePath);
     }
 }

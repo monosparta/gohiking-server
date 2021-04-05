@@ -15,5 +15,5 @@ use App\Http\Controllers\FacebookController;
 */
 
 Route::get('/', function () {
-    return response()->json(['status' => 'there is nothing here'], 404);
+    return view('welcome');
 });

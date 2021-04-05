@@ -36,7 +36,7 @@ class UserFactory extends Factory
     {
         // 將產生密碼的變數移到上面，並改從後端顯示明碼
         $originalPassword = $this->faker->swiftBicNumber;
-        error_log($originalPassword);
+        // error_log($originalPassword);
 
         return [
             'name' => $this->faker->name,

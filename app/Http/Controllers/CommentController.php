@@ -37,35 +37,36 @@ class CommentController extends Controller
             return ['status' => 0, 'massage' => $error];
         }
 
-        $comments=new Comment();
-        $comments->user_id=$request->user_id;
-        $comments->trail_id=$request->trail_id;
-        $comments->date=$request->date;
-        $comments->star=$request->star;
-        $comments->difficulty=$request->difficulty;
-        $comments->beauty=$request->beauty;
-        $comments->duration=$request->duration;
-        $comments->content=$request->content;
-        $comments->likes=0;
-        $comments->dislikes=0;
-        $comments->save();//新增
+        $comments = new Comment();
+        $comments->user_id = $request->user_id;
+        $comments->trail_id = $request->trail_id;
+        $comments->date = $request->date;
+        $comments->star = $request->star;
+        $comments->difficulty = $request->difficulty;
+        $comments->beauty = $request->beauty;
+        $comments->duration = $request->duration;
+        $comments->content = $request->content;
+        $comments->likes = 0;
+        $comments->dislikes = 0;
+        $comments->save(); //新增
         //取的最新一筆 該使用者新增的comment_id
-        $last_comments_id=Comment::select('id')->where('user_id','=',$request->user_id)->latest('id')->first();
-        if(isset($request->s3_url)&&isset($request->tag_id)){
-            $s3_urls=explode(',',$request->s3_url);//多筆請用,分割
-            $tags=explode(',',$request->tag_id);//分割傳來圖片的tag數字
-            for($i=0;$i<count($s3_urls);$i++)//看有幾筆，就新增幾筆
-            {
-                $commentsImages=new CommentsImage();
-                $commentsImages->comment_id=$last_comments_id->id;
-                $commentsImages->user_id=$request->user_id;
-                $commentsImages->s3_url=$s3_urls[$i];
-                $commentsImages->tag_id=$tags[$i];
-                $commentsImages->save();
-            }
-        }
+        // $last_comments_id = Comment::select('id')->where('user_id', '=', $request->user_id)->latest('id')->first();
+        // if (isset($request->s3_url) && isset($request->tag_id)) {
+        //     $s3_urls = explode(',', $request->s3_url); //多筆請用,分割
+        //     $tags = explode(',', $request->tag_id); //分割傳來圖片的tag數字
+        //     for ($i = 0; $i < count($s3_urls); $i++) //看有幾筆，就新增幾筆
+        //     {
+        //         $commentsImages = new CommentsImage();
+        //         $commentsImages->comment_id = $last_comments_id->id;
+        //         $commentsImages->user_id = $request->user_id;
+        //         $commentsImages->s3_url = $s3_urls[$i];
+        //         $commentsImages->tag_id = $tags[$i];
+        //         $commentsImages->save();
+        //     }
+        // }
+        return 1;
 
-        return Comment::with('commentsImages.tag')->where('trail_id','=',$request->trail_id)->get();
+        return Comment::with('commentsImages.tag')->where('trail_id', '=', $request->trail_id)->get();
     }
 
     /**
@@ -76,47 +77,47 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        $totalPeople=count(Comment::select('star') ->where('trail_id','=',$id)->get());
-        $avgStar=Comment::select('star') ->where('trail_id','=',$id)->avg('star');
-        $stars=Comment::select('star',DB::raw('count(*) as count'))
-        ->where('trail_id','=',$id)
-        ->groupBy('star')
-        ->get();
-        $starsgrop=[
-            "one"=>"0",
-            "two"=>"0",
-            "three"=>"0",
-            "four"=>"0",
-            "five"=>"0"
+        $totalPeople = count(Comment::select('star')->where('trail_id', '=', $id)->get());
+        $avgStar = Comment::select('star')->where('trail_id', '=', $id)->avg('star');
+        $stars = Comment::select('star', DB::raw('count(*) as count'))
+            ->where('trail_id', '=', $id)
+            ->groupBy('star')
+            ->get();
+        $starsgrop = [
+            "one" => "0",
+            "two" => "0",
+            "three" => "0",
+            "four" => "0",
+            "five" => "0"
         ];
-        foreach($stars as $key=>$value)
-        {
-            switch ($value->star){
+        foreach ($stars as $key => $value) {
+            switch ($value->star) {
                 case 1:
-                    $starsgrop['one']=$value->count;
+                    $starsgrop['one'] = $value->count;
                     break;
                 case 2:
-                    $starsgrop['two']=$value->count;
+                    $starsgrop['two'] = $value->count;
                     break;
                 case 3:
-                    $starsgrop['three']=$value->count;
+                    $starsgrop['three'] = $value->count;
                     break;
                 case 4:
-                    $starsgrop['four']=$value->count;
+                    $starsgrop['four'] = $value->count;
                     break;
                 case 5:
-                    $starsgrop['five']=$value->count;
+                    $starsgrop['five'] = $value->count;
                     break;
             }
         }
 
-        $comments=Comment::with('commentsImages','user:id,name')->where('trail_id','=',$id)->get();
+        $comments = Comment::with('commentsImages', 'user:id,name')->where('trail_id', '=', $id)->get();
         // for($i=0;$i<count($comments))
+        return $comments[0]['comments_images'];
         return response()->json(array(
-            'totalPeople'=>$totalPeople,
-            'avgStar'=>$avgStar,
-            'stars'=>$starsgrop,
-            'comments'=>$comments,
+            'totalPeople' => $totalPeople,
+            'avgStar' => $avgStar,
+            'stars' => $starsgrop,
+            'comments' => $comments,
         ));
     }
 
@@ -147,14 +148,14 @@ class CommentController extends Controller
     {
         return
             [
-                'user_id'=>'bail|required',
-                'trail_id'=>'bail|required',
-                'date'=>'bail|required',
-                'star'=>'bail|required',
-                'difficulty'=>'bail|required',
-                'beauty'=>'bail|required',
-                'duration'=>'bail|required',
-                'content'=>'bail|required',
+                'user_id' => 'bail|required',
+                'trail_id' => 'bail|required',
+                'date' => 'bail|required',
+                'star' => 'bail|required',
+                'difficulty' => 'bail|required',
+                'beauty' => 'bail|required',
+                'duration' => 'bail|required',
+                'content' => 'bail|required',
             ];
     }
 
