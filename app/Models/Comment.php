@@ -10,7 +10,7 @@ class Comment extends Model
     use HasFactory;
     protected $table = 'comments';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id','trail_id','date','star','difficulty','beauty','duration','content','likes','dislikes'];
+    protected $fillable = ['user_id','trail_id','date','star','difficulty','beauty','duration','content'];
 
     public function trail(){
         return $this->belongsTo(Trail::class);
@@ -22,5 +22,9 @@ class Comment extends Model
 
     public function commentsImages(){
         return $this->hasMany(CommentsImage::class);
+    }
+
+    public function userLikeComment(){
+        return $this->hasMany(UserLikeComment::class);
     }
 }
