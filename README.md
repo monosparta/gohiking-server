@@ -110,7 +110,7 @@ touch ./database/database.sqlite
   "apple_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
   "avatar": "大頭貼，圖片URL",
   "token": "(用於產生密碼雜湊)",
-    "userId": "8"
+  "userId": "8"
 }
 ```
 2. 回傳格式如下：
@@ -195,6 +195,17 @@ touch ./database/database.sqlite
 {
     "error": "this account is missing!"
 }
+```
+
+## 附註
+
+### token期限相關設定(供前端參考)
+```
+// 設定token的有效期
+//  app/Providers/AuthServiceProvider.php 
+Passport::tokensExpireIn(now()->addHours(1)); // 設定使用期限，1小時到期
+Passport::refreshTokensExpireIn(now()->addDays(1)); // 設定可刷新的期限，1天內可更新持續用
+Passport::personalAccessTokensExpireIn(now()->addMonths(1)); // 設定可存取期限，1個月內
 ```
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
