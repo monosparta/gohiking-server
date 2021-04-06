@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\VarDumper\Cloner\Data;
 
+use function PHPSTORM_META\type;
+
 class UserController extends Controller
 {
     /**
@@ -164,11 +166,15 @@ class UserController extends Controller
     {
         $date = new DateTime();
         $timestamp =  $date->getTimestamp();
-        list($baseType, $image) = explode(';', $uploadImage);
-        list(, $image) = explode(',', $image);
-        $image = base64_decode($image);
         $filePath = 'imgs/' . $timestamp . '.jpg';
-        return Storage::disk('s3')->put($filePath, $image) ? $filePath : false;
+        if (gettype($uploadImage) == 'object') {
+            return Storage::disk('s3')->putFileAs('imgs', $uploadImage, $timestamp . '.jpg') ? $filePath : false;
+        } else {
+            list($baseType, $image) = explode(';', $uploadImage);
+            list(, $image) = explode(',', $image);
+            $image = base64_decode($image);
+            return Storage::disk('s3')->put('imgs/' . $timestamp . '.jpg', $image) ? $filePath : false;
+        }
     }
     private function getFileUrl_s3($fileName)
     {

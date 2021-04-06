@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\TrailController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserLikeCommentController;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\HomeController;
@@ -63,4 +64,5 @@ Route::resource('/favorite', FavoritesController::class);
 Route::get('/favorites', [FavoritesController::class, 'Inquire']);
 Route::post('/favorite/delete', [FavoriteController::class, 'delete']);
 
-Route::resource('/comment', CommentController::class);
+Route::resource('/comment',CommentController::class);
+Route::resource('/likeComment',UserLikeCommentController::class);

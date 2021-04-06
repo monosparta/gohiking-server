@@ -89,4 +89,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(CommentsImages::class);
     }
+
+    public function userLikeComment(){
+        return $this->hasMany(UserLikeComment::class);
+    }
 }
