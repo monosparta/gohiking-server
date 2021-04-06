@@ -55,9 +55,9 @@ touch ./database/database.sqlite
   "name": "姓名",
   "gender": 性別(1為男性，0為女性，null未指定),
   "phone_number": "手機號碼",
-  "country_code_id": 電話國碼(國家/地區代碼)
+  "country_code_id": 該筆電話國碼(國家/地區代碼)資料的id
   "birth": "生日(西元年/月/日)",
-  "county_id": 居住地(縣市代碼)
+  "county_id": 該筆居住地(縣市代碼)資料的id
 }
 ```
 2. 回傳格式如下：
@@ -108,9 +108,9 @@ touch ./database/database.sqlite
   "facebook_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
   "google_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
   "apple_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
-  "avatar": "大頭貼",
+  "avatar": "大頭貼，圖片URL",
   "token": "(用於產生密碼雜湊)",
-    "userId": "8"
+  "userId": "8"
 }
 ```
 2. 回傳格式如下：
@@ -195,6 +195,40 @@ touch ./database/database.sqlite
 {
     "error": "this account is missing!"
 }
+```
+
+## 附註
+
+### Heroku專用seeder/factory設定
+- DatabaseSeeder.php改成：
+```
+function autoIncrementTweak($id)
+{
+    $range = 4; // 根據ClearDB設定
+    return $id * 10 - 10 + $range;
+
+    // return $id; // 本機設定
+}
+```
+
+- UserFactory.php改成：
+```
+function factoryAutoIncrementTweak($id)
+{
+    $range = 4; // 根據ClearDB設定
+    return $id * 10 - 10 + $range;
+
+    // return $id; // 本機設定
+}
+```
+
+### token期限相關設定(供前端參考)
+```
+// 設定token的有效期
+//  app/Providers/AuthServiceProvider.php 
+Passport::tokensExpireIn(now()->addHours(1)); // 設定使用期限，1小時到期
+Passport::refreshTokensExpireIn(now()->addDays(1)); // 設定可刷新的期限，1天內可更新持續用
+Passport::personalAccessTokensExpireIn(now()->addMonths(1)); // 設定可存取期限，1個月內
 ```
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>

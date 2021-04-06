@@ -32,11 +32,8 @@ class TrailsTableSeeder extends Seeder
             $trail->evaluation = rand(1, 5);
             $county_id = County::where('name', $data['city'])->get('id')[0]->id;
             $trail->location_id = Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id;
-            error_log(($trail->location_id));
-            // $trail->article_id = rand(1, 10);
-            // $trail->classification_id = rand(1, 10);
-            $trail->article_id = autoIncrementTweak(rand(1, 10)); // heroku部署用
-            $trail->classification_id = autoIncrementTweak(rand(1, 10)); // heroku部署用
+            $trail->article_id = autoIncrementTweak(rand(1, 10));
+            $trail->classification_id = autoIncrementTweak(rand(1, 10));
             $trail->save();
         }
     }
