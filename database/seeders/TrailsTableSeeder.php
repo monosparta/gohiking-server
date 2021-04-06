@@ -33,7 +33,7 @@ class TrailsTableSeeder extends Seeder
             $county_id = County::where('name', $data['city'])->get('id')[0]->id;
             $trail->location_id = Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id;
             $trail->article_id = autoIncrementTweak(rand(1, 10));
-            $trail->classification_id = autoIncrementTweak(rand(1, 10));
+            $trail->classification_id = autoIncrementTweak(rand(1, 7));
           
             $trail->save();
         }
