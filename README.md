@@ -199,6 +199,29 @@ touch ./database/database.sqlite
 
 ## 附註
 
+### Heroku專用seeder/factory設定
+- DatabaseSeeder.php改成：
+```
+function autoIncrementTweak($id)
+{
+    $range = 4; // 根據ClearDB設定
+    return $id * 10 - 10 + $range;
+
+    // return $id; // 本機設定
+}
+```
+
+- UserFactory.php改成：
+```
+function factoryAutoIncrementTweak($id)
+{
+    $range = 4; // 根據ClearDB設定
+    return $id * 10 - 10 + $range;
+
+    // return $id; // 本機設定
+}
+```
+
 ### token期限相關設定(供前端參考)
 ```
 // 設定token的有效期

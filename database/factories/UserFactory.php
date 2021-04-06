@@ -10,10 +10,10 @@ use Illuminate\Support\Str;
             故先另外命名後重複定義 */
 function factoryAutoIncrementTweak($id)
 {
-    $range = 4; // 根據ClearDB設定
-    return $id * 10 - 10 + $range;
+    // $range = 4; // 根據ClearDB設定
+    // return $id * 10 - 10 + $range;
 
-//     return $id; // 本機設定
+    return $id; // 本機設定
 }
 
 class UserFactory extends Factory
