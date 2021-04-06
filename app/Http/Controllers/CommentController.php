@@ -101,15 +101,18 @@ class CommentController extends Controller
         //這是爛code，我盡力了
         //取得使用者對評論喜歡狀態
         foreach ($comments as $key => $values) {
-            $comments[$key]['status'] = null;
+            $comments[$key]['likestatus'] = false;
+            $comments[$key]['dislikestatus'] = false;
             foreach ($userlikestatus as $k => $v) {
                 if ($userlikestatus[$k]->comment_id == $comments[$key]->id) {
                     switch ($userlikestatus[$k]->status) {
                         case 1:
-                            $comments[$key]['status'] = 'like';
+                            $comments[$key]['likestatus'] = true;
+                            $comments[$key]['dislikestatus'] = false;
                             break;
                         case -1:
-                            $comments[$key]['status'] = 'dislike';
+                            $comments[$key]['likestatus'] = false;
+                            $comments[$key]['dislikestatus'] = true;
                             break;
                     }
                 }
