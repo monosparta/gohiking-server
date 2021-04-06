@@ -5,24 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CommentsImage extends Model
+class UserLikeComment extends Model
 {
     use HasFactory;
-    protected $table = 'comments_images';
+    protected $table = 'user_like_comments';
     protected $primaryKey = 'id';
-    protected $fillable = ['comment_id','user_id','s3_filePath','tag_id'];
-    protected $hidden =['id','s3_filePath'];
+    protected $fillable = ['comment_id','user_id','status'];
 
     public function comment(){
         return $this->belongsTo(Comment::class);
     }
 
-    public function tag(){
-        return $this->belongsTo(Tag::class);
-    }
-
-    public function user()
-    {
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

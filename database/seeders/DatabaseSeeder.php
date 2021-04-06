@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TagSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(CommentsImageSeeder::class);
+        $this->call(UserLikeCommentSeeder::class);
         $this->call(FavoritesSeeder::class);
     }
 }

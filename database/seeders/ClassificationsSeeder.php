@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Classification;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 
 class ClassificationsSeeder extends Seeder
 {
@@ -14,6 +15,15 @@ class ClassificationsSeeder extends Seeder
      */
     public function run()
     {
-        Classification::factory()->count(10)->create();
+        $json = FacadesStorage::disk('local')->get('classification.json');
+        $json = json_decode($json, true);
+
+        foreach ($json as $key => $data) {
+            $classification = new Classification();
+            $classification->name = $data['name'];
+            $classification->title = $data['subTitle'];
+            $classification->image = $data['iconImage'];
+            $classification->save();
+        }
     }
 }
