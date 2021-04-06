@@ -22,8 +22,8 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>rand(1,10),
-            'trail_id'=>rand(1,6),
+            'user_id'=>factoryAutoIncrementTweak(rand(1,10)),
+            'trail_id'=>factoryAutoIncrementTweak(rand(1,6)),
             'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'star'=>rand(1,5),
             'difficulty'=>rand(1,5),

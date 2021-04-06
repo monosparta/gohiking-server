@@ -58,8 +58,8 @@ class CollectionTrailTableSeeder extends Seeder
         ];
         foreach ($datas as $data) {
             $collection_trail = new CollectionTrail();
-            $collection_trail->collection_id = $data['collection_id'];
-            $collection_trail->trail_id = $data['trail_id'];
+            $collection_trail->collection_id = autoIncrementTweak($data['collection_id']);
+            $collection_trail->trail_id = autoIncrementTweak($data['trail_id']);
             $collection_trail->save();
         }
     }

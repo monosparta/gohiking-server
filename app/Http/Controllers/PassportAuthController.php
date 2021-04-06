@@ -31,7 +31,7 @@ class PassportAuthController extends Controller
 
             // 預先產生與回傳前端存取需驗證身分的API時，於headers攜帶的token，即可註冊後直接登入使用
             $token = $user->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' =>$token, 'userId' => $user->id], 200);
+            return response()->json(['token' =>$token, 'userId' => $user->id, 'expireTime' => 86400000], 200);
         }
     }
 
@@ -41,9 +41,9 @@ class PassportAuthController extends Controller
             'name' => 'required',
             'gender' => 'required',
             'phone_number' => 'required',
-            'phone_region' => 'required',
+            'county_id' => 'required',
             'birth' => 'required',
-            'live' => 'required',
+            'country_code_id' => 'required',
         ]);
 
         $findUser = User::where('id', $request->user()->id)->first();
@@ -53,9 +53,9 @@ class PassportAuthController extends Controller
                 'name' => $request->name,
                 'gender' => $request->gender,
                 'phone_number' => $request->phone_number,
-                'phone_region' => $request->phone_region,
+                'county_id' => $request->county_id,
                 'birth' => $request->birth,
-                'live' => $request->live,
+                'country_code_id' => $request->country_code_id,
             ]);
             return response()->json(['status' => 'your profile is created!'], 200);
         } else {
@@ -72,7 +72,7 @@ class PassportAuthController extends Controller
 
         if (auth()->attempt($logInData)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' =>$token, 'userId' => auth()->user()->id], 200);
+            return response()->json(['token' =>$token, 'userId' => auth()->user()->id, 'expireTime' => 86400000], 200);
         } else {
             return response()->json(['error' => 'wrong email or password!'], 401);
         }
