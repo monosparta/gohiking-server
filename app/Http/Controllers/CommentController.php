@@ -167,6 +167,9 @@ class CommentController extends Controller
                 'beauty' => 'bail|required',
                 'duration' => 'bail|required',
                 'content' => 'bail|required',
+                'images'=>'bail|max:15',
+                'images.*'=>'bail|image|mimes:jpeg,jpg,png,gif',
+                'tag_id'=>'bail|max:15'
             ];
     }
 
