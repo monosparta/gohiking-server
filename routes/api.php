@@ -13,6 +13,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\TrailInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,3 +67,5 @@ Route::post('/favorite/delete', [FavoriteController::class, 'delete']);
 
 Route::resource('/comment',CommentController::class);
 Route::resource('/likeComment',UserLikeCommentController::class);
+
+Route::resource('/trailinfo',TrailInfoController::class);
