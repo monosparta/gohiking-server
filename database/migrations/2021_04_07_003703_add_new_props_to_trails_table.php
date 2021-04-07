@@ -21,6 +21,7 @@ class AddNewPropsToTrailsTable extends Migration
             $table->mediumText('intro');
             $table->longText('map');
             $table->longText('album');
+            $table->mediumText('trailstatus')->nullable();
         });
         //步道口
         Schema::create('trail_heads', function (Blueprint $table) {
@@ -91,6 +92,7 @@ class AddNewPropsToTrailsTable extends Migration
             $table->dropColumn('intro');
             $table->dropColumn('map');
             $table->dropColumn('album');
+            $table->dropColumn('trailstatus');
         });
         //步道口
         Schema::table('trail_heads', function (Blueprint $table) {
