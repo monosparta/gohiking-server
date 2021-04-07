@@ -34,6 +34,12 @@ class TrailsTableSeeder extends Seeder
             $trail->location_id = Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id;
             $trail->article_id = autoIncrementTweak(rand(1, 10));
             $trail->classification_id = autoIncrementTweak(rand(1, 7));
+            $trail->class='國家級';
+            $trail->costTime=170;
+            $trail->roadstatus='土石路、碎石路、棧橋、階梯';
+            $trail->intro='翠峰湖環山步道環繞著台灣最大的高山湖泊，循著昔日運材軌道路線整建而成，提供春浴新綠、夏洗雨霧、秋賞紅葉、冬觀白雪的四季體驗。翠峰湖海拔1840公尺，雨季時湖面達25公頃，為台灣最大的高山湖泊，晨昏變化萬千，四季風情各異。';
+            $trail->map=$data['imgUrl'];
+            $trail->album=$data['imgUrl'];
           
             $trail->save();
         }
