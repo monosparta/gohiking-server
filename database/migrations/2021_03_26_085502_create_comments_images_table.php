@@ -15,10 +15,10 @@ class CreateCommentsImagesTable extends Migration
     {
         Schema::create('comments_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('comment_id');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('comment_id');
+            $table->unsignedBigInteger('user_id');
             $table->mediumText('s3_filePath');
-            $table->integer('tag_id');
+            $table->unsignedBigInteger('tag_id');
             $table->timestamps();
         });
     }

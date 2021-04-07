@@ -15,8 +15,8 @@ class CreateUserLikeCommentsTable extends Migration
     {
         Schema::create('user_like_comments', function (Blueprint $table) {
             $table->id();
-            $table->integer('comment_id');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('comment_id');
+            $table->unsignedBigInteger('user_id');
             $table->integer('status');
             $table->timestamps();
         });
