@@ -48,8 +48,11 @@ class TrailInfoController extends Controller
      */
     public function show($id,Request $request)
     {
-        $result=Trail::select('title','altitude','classification_id','distance','class','costTime','roadstatus','intro','map')->find($id);
-        
+        $result=Trail::select('title','altitude','classification_id','distance','class','costTime','roadstatus','intro','map','trailstatus')->find($id);
+        if($id==1){
+            $result['trailstatus']='目前全線封閉，暫停開放。';
+        }
+
         $location=Trail::select('location_id')->with('location.county')->first();
         $location=$location->location->name.$location->location->county->name;
         $result['location']=$location;
