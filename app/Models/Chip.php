@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Chip extends Model
 {
     use HasFactory;
+
+    public function chiptrail()
+    {
+        
+    }
 }

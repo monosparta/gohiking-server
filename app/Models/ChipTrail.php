@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ChipTrail extends Model
 {
     use HasFactory;
+
+    public function chip()
+    {
+        return $this->belongsTo(Chip::class);
+    }
 }

@@ -10,6 +10,7 @@ use App\Models\TrailHead;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CommentController;
+use App\Models\ChipTrail;
 
 class TrailInfoController extends Controller
 {
@@ -52,6 +53,14 @@ class TrailInfoController extends Controller
         $location=Trail::select('location_id')->with('location.county')->first();
         $location=$location->location->name.$location->location->county->name;
         $result['location']=$location;
+
+        $chips=ChipTrail::select('chip_id')->with('chip')->get();
+        $chipArray=[];
+        foreach($chips as $chip)
+        {
+            array_push($chipArray,$chip->chip->name);
+        }
+        $result['chips']=$chipArray;
 
         $trailHead=TrailHead::select('name','latitude','longitude','bannerImage','description')->where('trail_id','=',$id)->get();
         $result['trailHead']=$trailHead;
