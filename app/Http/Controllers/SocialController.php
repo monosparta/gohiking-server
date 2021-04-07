@@ -42,7 +42,7 @@ class SocialController extends Controller
                 Auth::login($findUser);
 
                 $token = $findUser->createToken('LaravelAuthApp')->accessToken;
-                return response()->json(['token' => $token, 'userId' => $findUser->id, 'expireTime' => 86400000], 200);
+                return response()->json(['token' => $token, 'userId' => $findUser->id, 'expireTime' => 3600000], 200);
             }   
 
             // 帳號尚未註冊
@@ -59,7 +59,7 @@ class SocialController extends Controller
                 $newUser->save();
                 Auth::login($newUser);
                 $token = $newUser->createToken('LaravelAuthApp')->accessToken;
-                return response()->json(['token' =>$token, 'userId' => $newUser->id, 'expireTime' => 86400000], 200);
+                return response()->json(['token' =>$token, 'userId' => $newUser->id, 'expireTime' => 3600000], 200);
             }
         } catch (Exception $e) {
             dd($e->getMessage());
