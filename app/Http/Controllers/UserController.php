@@ -138,7 +138,7 @@ class UserController extends Controller
                 'gender' => 'bail|required|in:0,1',
                 'phone_number' => 'bail|required',
                 'birth' => 'bail|required|date|before:' . date("Y/m/d"),
-                'image' => 'bail|required|max:1024',
+                'image' => 'bail|max:1024',
                 'county' => 'bail|required|max:3|min:3'
             ];
     }
