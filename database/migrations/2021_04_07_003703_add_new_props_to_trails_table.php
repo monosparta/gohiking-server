@@ -26,7 +26,7 @@ class AddNewPropsToTrailsTable extends Migration
         //步道口
         Schema::create('trail_heads', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('trail_id');
+            $table->unsignedBigInteger('trail_id');
             $table->string('name');
             $table->string('latitude');
             $table->string('longitude');
@@ -39,7 +39,7 @@ class AddNewPropsToTrailsTable extends Migration
         //最新消息
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('trail_id');
+            $table->unsignedBigInteger('trail_id');
             $table->longText('imgUrl');
             $table->string('title');
             $table->date('date');
@@ -52,7 +52,7 @@ class AddNewPropsToTrailsTable extends Migration
         //附近景點
         Schema::create('attractions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('trail_id');
+            $table->unsignedBigInteger('trail_id');
             $table->string('category');
             $table->string('title');
             $table->mediumText('link');
@@ -68,8 +68,8 @@ class AddNewPropsToTrailsTable extends Migration
         });
         Schema::create('chip_trails', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('chip_id');
-            $table->unsignedInteger('trail_id');
+            $table->unsignedBigInteger('chip_id');
+            $table->unsignedBigInteger('trail_id');
             $table->timestamps();
 
             $table->foreign('chip_id')->references('id')->on('chips')->onDelete('cascade');
