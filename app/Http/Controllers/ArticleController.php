@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -34,9 +35,18 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $articles = Article::with('trails', 'trails.location', 'trails.location.county')->find($id);
+        $userTrail = Favorite::select('trail_id')->where('user_id', '=', $request->uuid)->get();
+        for ($i = 0; $i < count($articles->trails); $i++) {
+            $articles->trails[$i]["favorite"] = false;
+            for ($j = 0; $j < count($userTrail); $j++) {
+                if ($articles->trails[$i]->id === $userTrail[$j]->trail_id) {
+                    $articles->trails[$i]["favorite"] = true;
+                }
+            }
+        }
         return $articles;
     }
 
