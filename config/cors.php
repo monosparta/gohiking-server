@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*,*'], // 參考：https://github.com/fruitcake/laravel-cors/issues/440#issuecomment-706521861
 
     'allowed_origins_patterns' => [],
 
