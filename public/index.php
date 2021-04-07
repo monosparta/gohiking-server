@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin:*');
-header('Access-Control-Allow-Methods:POST, GET');
+header('Access-Control-Allow-Methods:*');
 header('Access-Control-Allow-Headers:*');
 
 use Illuminate\Contracts\Http\Kernel;
