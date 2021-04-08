@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CommentSeeder::class);
         $this->call(CommentsImageSeeder::class);
         $this->call(UserLikeCommentSeeder::class);
-        $this->call(FavoritesSeeder::class);
         $this->call(ChipSeeder::class);
         $this->call(AnnouncementSeeder::class);
         $this->call(AttractionSeeder::class);
