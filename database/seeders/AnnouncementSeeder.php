@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Announcement;
+use App\Models\Trail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 
@@ -18,16 +19,20 @@ class AnnouncementSeeder extends Seeder
         $json = FacadesStorage::disk('local')->get('pathwayinfo.json');
         $json = json_decode($json, true);
         
-        foreach($json[0]['announcement'] as $data)
+        $counttrail=count(Trail::select('id')->get());
+        for($i=1;$i<=$counttrail;$i++)
         {
-            $newAnnouncement = new Announcement();
-            $newAnnouncement->trail_id= 1;
-            $newAnnouncement->title=$data['title'];
-            $newAnnouncement->imgUrl=$data['img'];
-            $newAnnouncement->date=$data['date'];
-            $newAnnouncement->source=$data['source'];
-            $newAnnouncement->link=$data['link'];
-            $newAnnouncement->save();
+            foreach($json[0]['announcement'] as $data)
+            {
+                $newAnnouncement = new Announcement();
+                $newAnnouncement->trail_id= $i;
+                $newAnnouncement->title=$data['title'];
+                $newAnnouncement->imgUrl=$data['img'];
+                $newAnnouncement->date=$data['date'];
+                $newAnnouncement->source=$data['source'];
+                $newAnnouncement->link=$data['link'];
+                $newAnnouncement->save();
+            }
         }
     }
 }
