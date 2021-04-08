@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\CollectionController;
@@ -10,9 +11,11 @@ use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\TrailHeadController;
 use App\Http\Controllers\TrailInfoController;
 
 /*
@@ -72,4 +75,7 @@ Route::middleware('cors')->group(function () {
     Route::resource('/likeComment',UserLikeCommentController::class);
 
     Route::resource('/trailinfo',TrailInfoController::class);
+    Route::resource('/trailHead',TrailHeadController::class);
+    Route::resource('/announcement',AnnouncementController::class);
+    Route::resource('/attraction',AttractionController::class);
 });
