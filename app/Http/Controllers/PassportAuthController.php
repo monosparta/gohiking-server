@@ -31,7 +31,7 @@ class PassportAuthController extends Controller
 
             // 預先產生與回傳前端存取需驗證身分的API時，於headers攜帶的token，即可註冊後直接登入使用
             $token = $user->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' =>$token, 'userId' => $user->id, 'expireTime' => 3600000], 200);
+            return response()->json(['token' => $token, 'userId' => $user->id, 'expireTime' => 3600000], 200);
         }
     }
 
@@ -48,7 +48,14 @@ class PassportAuthController extends Controller
 
         $findUser = User::where('id', $request->user()->id)->first();
 
-        if ($findUser) { // 帳號剛註冊，須建立個人資料
+        $findPhone = User::where('phone_number', $request->phone_number)->first();
+
+        // 帳號已經註冊，且手機號碼沒被重複使用過，才可建立個人資料
+        if (!$findUser) { // 帳號尚未註冊
+            return response()->json(['error' => 'this account is missing!'], 401);
+        } else if ($findPhone) { // 手機號碼已被使用
+            return response()->json(['error' => 'this phone number is registered by someone else!'], 401);
+        } else {
             User::where('email', $findUser->email)->update([
                 'name' => $request->name,
                 'gender' => $request->gender,
@@ -58,8 +65,6 @@ class PassportAuthController extends Controller
                 'country_code_id' => $request->country_code_id,
             ]);
             return response()->json(['status' => 'your profile is created!'], 200);
-        } else {
-            return response()->json(['error' => 'this account is missing!'], 401);
         }
     }
 
@@ -72,7 +77,7 @@ class PassportAuthController extends Controller
 
         if (auth()->attempt($logInData)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' =>$token, 'userId' => auth()->user()->id, 'expireTime' => 3600000], 200);
+            return response()->json(['token' => $token, 'userId' => auth()->user()->id, 'expireTime' => 3600000], 200);
         } else {
             return response()->json(['error' => 'wrong email or password!'], 401);
         }
@@ -99,7 +104,7 @@ class PassportAuthController extends Controller
             // 寄送驗證碼信件，參考：https://ithelp.ithome.com.tw/articles/10252073
             $email = $request->email;
             $userToken = $findUser->remember_token;
-            $url = env('APP_URL')."/api/password/change/$userToken";
+            $url = env('APP_URL') . "/api/password/change/$userToken";
             $text = '你的驗證碼是：' . $verificationCodes[0] . ', ' . $verificationCodes[1] . ', ' . $verificationCodes[2] . ', ' . $verificationCodes[3] . '，若要更改密碼，請點以下連結繼續：' . $url;
 
             // 將驗證碼寫入資料庫的使用者表格，以便在驗證時對應
