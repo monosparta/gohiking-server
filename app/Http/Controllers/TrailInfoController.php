@@ -57,7 +57,7 @@ class TrailInfoController extends Controller
         $location=$location->location->name.$location->location->county->name;
         $result['location']=$location;
 
-        $chips=ChipTrail::select('chip_id')->with('chip')->get();
+        $chips=ChipTrail::select('chip_id')->where('trail_id','=',$id)->with('chip')->get();
         $chipArray=[];
         foreach($chips as $chip)
         {

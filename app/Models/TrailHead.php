@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class TrailHead extends Model
 {
     use HasFactory;
+    protected $table = 'trail_heads';
 }
