@@ -194,6 +194,7 @@ class CommentController extends Controller
         $timestamp =  $date->getTimestamp();
         $filePath = 'imgs/' . $timestamp . '.jpg';
         if (gettype($uploadImage) == 'object') {
+            $filePath = 'imgs1/' . $timestamp . '.jpg';
             return Storage::disk('s3')->putFileAs('imgs1', $uploadImage, $timestamp . '.jpg') ? $filePath : false;
         } else {
             list($baseType, $image) = explode(';', $uploadImage);
