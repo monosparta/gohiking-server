@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Attraction;
+use App\Models\Trail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 
@@ -17,17 +18,21 @@ class AttractionSeeder extends Seeder
     {
         $json = FacadesStorage::disk('local')->get('pathwayinfo.json');
         $json = json_decode($json, true);
-
-        foreach($json[0]['attraction'] as $data)
+        
+        $counttrail=count(Trail::select('id')->get());
+        for($i=1;$i<=$counttrail;$i++)
         {
-            foreach($data['data'] as $datadata)
+            foreach($json[0]['attraction'] as $data)
             {
-                $newAttraction = new Attraction();
-                $newAttraction->trail_id=1;
-                $newAttraction->category=$data['category'];
-                $newAttraction->title=$datadata['title'];
-                $newAttraction->link=$datadata['link'];
-                $newAttraction->save();
+                foreach($data['data'] as $datadata)
+                {
+                    $newAttraction = new Attraction();
+                    $newAttraction->trail_id=$i;
+                    $newAttraction->category=$data['category'];
+                    $newAttraction->title=$datadata['title'];
+                    $newAttraction->link=$datadata['link'];
+                    $newAttraction->save();
+                }
             }
         }
     }

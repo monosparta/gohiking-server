@@ -98,7 +98,7 @@ class AddNewPropsToTrailsTable extends Migration
         Schema::table('trail_heads', function (Blueprint $table) {
             $table->dropForeign(['trail_id']);
         });
-        Schema::dropIfExists('trailheads');
+        Schema::dropIfExists('trail_heads');
         //最新消息
         Schema::table('announcements', function (Blueprint $table) {
             $table->dropForeign(['trail_id']);
