@@ -15,7 +15,8 @@ class ClassificationController extends Controller
      */
     public function index()
     {
-        //
+        $classification=Classification::all();
+        return $classification;
     }
 
     /**
