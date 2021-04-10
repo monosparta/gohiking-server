@@ -37,6 +37,11 @@ class TrailHeadController extends Controller
     public function show($id)
     {
         $trailHead=TrailHead::select('name','latitude','longitude','bannerImage','description')->where('trail_id','=',$id)->get();
+        $bannerImage=array();
+        foreach ($trailHead as $key => $value) {
+            $bannerImage=explode(',',$value->bannerImage);
+            $value['bannerImage']=$bannerImage;
+        }
         return $trailHead;
     }
 
