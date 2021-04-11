@@ -66,6 +66,11 @@ class TrailInfoController extends Controller
         $result['chips']=$chipArray;
 
         $trailHead=TrailHead::select('name','latitude','longitude','bannerImage','description')->where('trail_id','=',$id)->get();
+        $bannerImage=array();
+        foreach ($trailHead as $key => $value) {
+            $bannerImage=explode(',',$value->bannerImage);
+            $value['bannerImage']=$bannerImage;
+        }
         $result['trailHead']=$trailHead;
         
 
