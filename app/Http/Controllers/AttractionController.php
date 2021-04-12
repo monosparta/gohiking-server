@@ -37,7 +37,16 @@ class AttractionController extends Controller
     public function show($id)
     {
         $attraction=Attraction::select('category','title','link')->where('trail_id',$id)->get();
-        return $attraction;
+        $group = array();
+        foreach ($attraction as $key => $value) {
+            $group[$value['category']][] = ['title'=>$value['title'],'link'=>$value['link']];
+        }
+        $attractions=array();
+        foreach ($group as $key => $value) {
+            $attraction=['category'=>$key,'data'=>$value];
+            array_push($attractions,$attraction);
+        }
+        return $attractions;
     }
 
     /**

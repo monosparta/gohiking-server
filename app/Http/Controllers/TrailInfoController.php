@@ -66,6 +66,11 @@ class TrailInfoController extends Controller
         $result['chips']=$chipArray;
 
         $trailHead=TrailHead::select('name','latitude','longitude','bannerImage','description')->where('trail_id','=',$id)->get();
+        $bannerImage=array();
+        foreach ($trailHead as $key => $value) {
+            $bannerImage=explode(',',$value->bannerImage);
+            $value['bannerImage']=$bannerImage;
+        }
         $result['trailHead']=$trailHead;
         
 
@@ -80,7 +85,16 @@ class TrailInfoController extends Controller
         $result['announcement']=$announcement;
 
         $attraction=Attraction::select('category','title','link')->where('trail_id',$id)->get();
-        $result['attraction']=$attraction;
+        $group = array();
+        foreach ($attraction as $key => $value) {
+            $group[$value['category']][] = ['title'=>$value['title'],'link'=>$value['link']];
+        }
+        $attractions=array();
+        foreach ($group as $key => $value) {
+            $attraction=['category'=>$key,'data'=>$value];
+            array_push($attractions,$attraction);
+        }
+        $result['attraction']=$attractions;
 
         $comment=$this->CommentController->show($id,$request)->original;
         $result['comment']=$comment;
