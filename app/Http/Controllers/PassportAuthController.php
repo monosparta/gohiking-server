@@ -21,7 +21,7 @@ class PassportAuthController extends Controller
         $findUser = User::where('email', $request->email)->first();
 
         if ($findUser) {
-            return response()->json(['error' => 'this email is already registered!'], 404);
+            return response()->json(['error' => '此電子郵件地址已經被註冊了！'], 404);
         } else {
             $user = User::create([
                 'email' => $request->email,
@@ -52,9 +52,9 @@ class PassportAuthController extends Controller
 
         // 帳號已經註冊，且手機號碼沒被重複使用過，才可建立個人資料
         if (!$findUser) { // 帳號尚未註冊
-            return response()->json(['error' => 'this account is missing!'], 401);
+            return response()->json(['error' => '對應的帳號未找到！'], 401);
         } else if ($findPhone) { // 手機號碼已被使用
-            return response()->json(['error' => 'this phone number is registered by someone else!'], 401);
+            return response()->json(['error' => '此電話號碼已經被登記了！'], 401);
         } else {
             User::where('email', $findUser->email)->update([
                 'name' => $request->name,
@@ -64,7 +64,7 @@ class PassportAuthController extends Controller
                 'birth' => $request->birth,
                 'country_code_id' => $request->country_code_id,
             ]);
-            return response()->json(['status' => 'your profile is created!'], 200);
+            return response()->json(['status' => '您的個人資料已經成功建立！'], 200);
         }
     }
 
@@ -79,7 +79,7 @@ class PassportAuthController extends Controller
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token, 'userId' => auth()->user()->id, 'expireTime' => 3600000], 200);
         } else {
-            return response()->json(['error' => 'wrong email or password!'], 401);
+            return response()->json(['error' => '電子郵件地址或密碼錯誤！'], 401);
         }
     }
 
@@ -143,7 +143,7 @@ class PassportAuthController extends Controller
             $token = $findUser->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token], 200);
         } else {
-            return response()->json(['error' => 'wrong verification codes!'], 401);
+            return response()->json(['error' => '錯誤的驗證碼！'], 401);
         }
     }
 
@@ -157,9 +157,9 @@ class PassportAuthController extends Controller
             User::where('id', $request->user()->id)->first()->update([
                 'password' => bcrypt($request->password)
             ]);
-            return response()->json(['status' => 'your password has been changed!'], 200);
+            return response()->json(['status' => '您的密碼已經成功變更！'], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'this account is missing!'], 401);
+            return response()->json(['error' => '密碼變更失敗！'], 401);
         }
     }
 }
