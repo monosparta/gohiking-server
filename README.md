@@ -111,8 +111,7 @@ touch ./database/database.sqlite
   "google_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
   "apple_id": "(id部分僅會因應社群平台來源，只傳其中一個)",
   "avatar": "大頭貼，圖片URL",
-  "token": "(用於產生密碼雜湊)",
-  "userId": "8"
+  "token": "(用於產生密碼雜湊)"
 }
 ```
 2. 回傳格式如下：
