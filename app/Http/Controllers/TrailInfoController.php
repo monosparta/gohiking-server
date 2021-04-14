@@ -48,7 +48,7 @@ class TrailInfoController extends Controller
      */
     public function show($id,Request $request)
     {
-        $result=Trail::select('title','altitude','classification_id','distance','class','costTime','roadstatus','intro','map','trailstatus')->find($id);
+        $result=Trail::select('id as trail_id','title','altitude','classification_id','distance','class','costTime','roadstatus','intro','map','trailstatus')->find($id);
         if($id==1){
             $result['trailstatus']='目前全線封閉，暫停開放。';
         }
@@ -99,10 +99,10 @@ class TrailInfoController extends Controller
         $comment=$this->CommentController->show($id,$request)->original;
         $result['comment']=$comment;
 
-        $articles = Article::select('id','title','image','updated_at')->take(5)->get();
+        $articles = Article::select('id as article_id','title','image','updated_at')->take(5)->get();
         $result['articles']=$articles;
 
-        $similar=Trail::select('title','coverImage','distance','location_id')->with('location.county')->where('classification_id',$result->classification_id)->get();
+        $similar=Trail::select('id as trail_id','title','coverImage','distance','location_id')->with('location.county')->where('classification_id',$result->classification_id)->get();
         $result['similar']=$similar;
 
         return $result;
