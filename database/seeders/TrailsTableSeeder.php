@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Storage as FacadesStorage;
 
 class TrailsTableSeeder extends Seeder
 {
+    public function autoIncrementTweak($id)
+    {
+    // $range = 4; // 根據ClearDB設定
+    // return $id * 10 - 10 + $range;
+
+    return $id; // 本機設定
+    }
     /**
      * Run the database seeds.
      *
@@ -23,8 +30,8 @@ class TrailsTableSeeder extends Seeder
         foreach ($json as $data) {
             $trail = new Trail();
             $trail->title = $data['title'];
-            $trail->latitude = $this->randomFloat(10, 1000);
-            $trail->longitude =  $this->randomFloat(10, 1000);
+            $trail->latitude = $this->randomFloat(120, 122);
+            $trail->longitude =  $this->randomFloat(22, 25);
             $trail->distance = $data['mileage'];
             $trail->coverImage = $data['imgUrl'];
             $trail->altitude = $data['mileage'] * 1000;
@@ -32,8 +39,8 @@ class TrailsTableSeeder extends Seeder
             $trail->evaluation = rand(1, 5);
             $county_id = County::where('name', $data['city'])->get('id')[0]->id;
             $trail->location_id = Location::where('name', $data['location'])->where('county_id', $county_id)->get('id')[0]->id;
-            $trail->article_id = autoIncrementTweak(rand(1, 10));
-            $trail->classification_id = autoIncrementTweak(rand(1, 7));
+            $trail->article_id = $this->autoIncrementTweak(rand(1, 10));
+            $trail->classification_id = $this->autoIncrementTweak(rand(1, 7));
             $trail->class='國家級';
             $trail->costTime=170;
             $trail->roadstatus='土石路、碎石路、棧橋、階梯';
