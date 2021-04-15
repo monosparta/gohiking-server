@@ -30,8 +30,8 @@ class TrailsTableSeeder extends Seeder
         foreach ($json as $data) {
             $trail = new Trail();
             $trail->title = $data['title'];
-            $trail->latitude = $this->randomFloat(120, 122);
-            $trail->longitude =  $this->randomFloat(22, 25);
+            $trail->latitude = $this->randomFloat(22, 25);
+            $trail->longitude =  $this->randomFloat(120, 122);
             $trail->distance = $data['mileage'];
             $trail->coverImage = $data['imgUrl'];
             $trail->altitude = $data['mileage'] * 1000;
