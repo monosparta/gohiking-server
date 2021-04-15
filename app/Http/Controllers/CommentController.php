@@ -119,7 +119,7 @@ class CommentController extends Controller
             }
         }
         //取得圖片URL
-        foreach ($comments as $key => $values) {
+        foreach ($comments as $imgkey => $values) {
             foreach ($values->commentsImages as $value) {
                 $value['s3_url'] = $this->getFileUrl_s3($value->s3_filePath);
             }
